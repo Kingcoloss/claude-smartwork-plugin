@@ -1,0 +1,388 @@
+{
+  "communities": {
+    "0": [
+      "hooks_pordee_activate_getstate",
+      "hooks_pordee_activate_js",
+      "hooks_pordee_activate_state",
+      "hooks_pordee_config_default_state",
+      "hooks_pordee_config_error_log_path",
+      "hooks_pordee_config_fs",
+      "hooks_pordee_config_getstate",
+      "hooks_pordee_config_js",
+      "hooks_pordee_config_logerror",
+      "hooks_pordee_config_os",
+      "hooks_pordee_config_path",
+      "hooks_pordee_config_setstate",
+      "hooks_pordee_config_state_path",
+      "hooks_pordee_config_valid_levels",
+      "tests_test_state_assert",
+      "tests_test_state_cleanup",
+      "tests_test_state_expected",
+      "tests_test_state_fs",
+      "tests_test_state_getstate_default_state",
+      "tests_test_state_getstate_setstate",
+      "tests_test_state_getstate_state_path_default_state",
+      "tests_test_state_home",
+      "tests_test_state_js",
+      "tests_test_state_maketemphome",
+      "tests_test_state_os",
+      "tests_test_state_path",
+      "tests_test_state_setstate_state_path",
+      "tests_test_state_state",
+      "tests_test_state_state_path",
+      "tests_test_state_test",
+      "tests_test_state_written"
+    ],
+    "1": [
+      "caveman_plugin",
+      "pordee_atomic_state_write",
+      "pordee_auto_clarity",
+      "pordee_boundaries",
+      "pordee_caveman_stats_adaptation",
+      "pordee_code_fence_skip",
+      "pordee_compression_rules",
+      "pordee_config_js",
+      "pordee_error_log",
+      "pordee_full_mode",
+      "pordee_history_jsonl",
+      "pordee_lite_mode",
+      "pordee_marketplace_json",
+      "pordee_node_test_runner",
+      "pordee_plugin",
+      "pordee_plugin_json",
+      "pordee_polite_particle_drop",
+      "pordee_sessionstart_hook",
+      "pordee_skill_md",
+      "pordee_state_json",
+      "pordee_stats_reporter",
+      "pordee_stats_skill_md",
+      "pordee_statusline_suffix",
+      "pordee_thai_compression_mode",
+      "pordee_thai_dev_examples",
+      "pordee_token_savings",
+      "pordee_trigger_parsing",
+      "pordee_usd_cost_estimate",
+      "pordee_userpromptsubmit_hook"
+    ],
+    "2": [
+      "tests_test_pordee_stats_assert",
+      "tests_test_pordee_stats_entry",
+      "tests_test_pordee_stats_execfilesync",
+      "tests_test_pordee_stats_formatstats",
+      "tests_test_pordee_stats_fs",
+      "tests_test_pordee_stats_histpath",
+      "tests_test_pordee_stats_humanizetokens",
+      "tests_test_pordee_stats_js",
+      "tests_test_pordee_stats_lines",
+      "tests_test_pordee_stats_makecompression",
+      "tests_test_pordee_stats_makesession",
+      "tests_test_pordee_stats_now",
+      "tests_test_pordee_stats_os",
+      "tests_test_pordee_stats_out",
+      "tests_test_pordee_stats_path",
+      "tests_test_pordee_stats_priceformodel",
+      "tests_test_pordee_stats_root",
+      "tests_test_pordee_stats_sess",
+      "tests_test_pordee_stats_stats",
+      "tests_test_pordee_stats_suffix",
+      "tests_test_pordee_stats_suffixpath",
+      "tests_test_pordee_stats_test"
+    ],
+    "3": [
+      "tests_test_benchmark_assert",
+      "tests_test_benchmark_compressionpath",
+      "tests_test_benchmark_data",
+      "tests_test_benchmark_env",
+      "tests_test_benchmark_execfilesync",
+      "tests_test_benchmark_fs",
+      "tests_test_benchmark_full",
+      "tests_test_benchmark_js",
+      "tests_test_benchmark_lite",
+      "tests_test_benchmark_loadprompts",
+      "tests_test_benchmark_makesystemprompt",
+      "tests_test_benchmark_mean",
+      "tests_test_benchmark_median",
+      "tests_test_benchmark_os",
+      "tests_test_benchmark_out",
+      "tests_test_benchmark_path",
+      "tests_test_benchmark_prompts",
+      "tests_test_benchmark_root",
+      "tests_test_benchmark_runbenchmark",
+      "tests_test_benchmark_runner",
+      "tests_test_benchmark_test"
+    ],
+    "4": [
+      "hooks_pordee_stats_aggregatehistory",
+      "hooks_pordee_stats_appendhistory",
+      "hooks_pordee_stats_derivesavings",
+      "hooks_pordee_stats_findrecentsession",
+      "hooks_pordee_stats_formathistory",
+      "hooks_pordee_stats_formatshare",
+      "hooks_pordee_stats_formatstats",
+      "hooks_pordee_stats_formatusd",
+      "hooks_pordee_stats_fs",
+      "hooks_pordee_stats_getstate",
+      "hooks_pordee_stats_humanizetokens",
+      "hooks_pordee_stats_js",
+      "hooks_pordee_stats_loadcompression",
+      "hooks_pordee_stats_main",
+      "hooks_pordee_stats_model_output_price_per_m",
+      "hooks_pordee_stats_os",
+      "hooks_pordee_stats_parseduration",
+      "hooks_pordee_stats_parsesession",
+      "hooks_pordee_stats_path",
+      "hooks_pordee_stats_priceformodel",
+      "hooks_pordee_stats_readhistory"
+    ],
+    "5": [
+      "tests_test_tracker_assert",
+      "tests_test_tracker_fs",
+      "tests_test_tracker_home",
+      "tests_test_tracker_js",
+      "tests_test_tracker_maketemphome",
+      "tests_test_tracker_os",
+      "tests_test_tracker_parsed",
+      "tests_test_tracker_path",
+      "tests_test_tracker_readstate",
+      "tests_test_tracker_result",
+      "tests_test_tracker_runtracker",
+      "tests_test_tracker_spawnsync",
+      "tests_test_tracker_state",
+      "tests_test_tracker_test",
+      "tests_test_tracker_tracker_path"
+    ],
+    "6": [
+      "tests_test_triggers_assert",
+      "tests_test_triggers_cases",
+      "tests_test_triggers_fs",
+      "tests_test_triggers_home",
+      "tests_test_triggers_js",
+      "tests_test_triggers_os",
+      "tests_test_triggers_path",
+      "tests_test_triggers_readstate",
+      "tests_test_triggers_runtracker",
+      "tests_test_triggers_spawnsync",
+      "tests_test_triggers_state",
+      "tests_test_triggers_test",
+      "tests_test_triggers_tracker_path"
+    ],
+    "7": [
+      "hooks_pordee_mode_tracker_args",
+      "hooks_pordee_mode_tracker_data",
+      "hooks_pordee_mode_tracker_emitactivereminder",
+      "hooks_pordee_mode_tracker_execfilesync",
+      "hooks_pordee_mode_tracker_getstate_setstate_logerror",
+      "hooks_pordee_mode_tracker_js",
+      "hooks_pordee_mode_tracker_parsetrigger",
+      "hooks_pordee_mode_tracker_path",
+      "hooks_pordee_mode_tracker_prompt",
+      "hooks_pordee_mode_tracker_state",
+      "hooks_pordee_mode_tracker_statsscript",
+      "hooks_pordee_mode_tracker_stripcodefences",
+      "hooks_pordee_mode_tracker_trigger"
+    ],
+    "8": [
+      "tests_test_activate_activate_path",
+      "tests_test_activate_assert",
+      "tests_test_activate_fs",
+      "tests_test_activate_home",
+      "tests_test_activate_js",
+      "tests_test_activate_maketemphome",
+      "tests_test_activate_os",
+      "tests_test_activate_path",
+      "tests_test_activate_result",
+      "tests_test_activate_runactivate",
+      "tests_test_activate_spawnsync",
+      "tests_test_activate_test"
+    ],
+    "9": [
+      "benchmarks_run_callapi",
+      "benchmarks_run_fs",
+      "benchmarks_run_js",
+      "benchmarks_run_loadprompts",
+      "benchmarks_run_main",
+      "benchmarks_run_makesystemprompt",
+      "benchmarks_run_mean",
+      "benchmarks_run_median",
+      "benchmarks_run_path",
+      "benchmarks_run_runbenchmark",
+      "benchmarks_run_saveresults",
+      "benchmarks_run_updatecompressionjson"
+    ],
+    "10": [
+      "pordee_benchmark_prompts",
+      "pordee_benchmark_runner",
+      "pordee_compression_json",
+      "pordee_median_compression_ratio"
+    ],
+    "11": [
+      "pordee_design_spec",
+      "pordee_mvp_plan"
+    ],
+    "12": [
+      "pordee_stats_design_spec",
+      "pordee_stats_plan"
+    ]
+  },
+  "cohesion": {
+    "0": 0.08,
+    "1": 0.09,
+    "2": 0.09,
+    "3": 0.1,
+    "4": 0.19,
+    "5": 0.13,
+    "6": 0.15,
+    "7": 0.17,
+    "8": 0.17,
+    "9": 0.29,
+    "10": 0.5,
+    "11": 1.0,
+    "12": 1.0
+  },
+  "gods": [
+    {
+      "id": "hooks_pordee_stats_main",
+      "label": "main()",
+      "degree": 12
+    },
+    {
+      "id": "pordee_plugin",
+      "label": "pordee Claude Code Plugin",
+      "degree": 11
+    },
+    {
+      "id": "hooks_pordee_config_getstate",
+      "label": "getState()",
+      "degree": 8
+    },
+    {
+      "id": "pordee_stats_reporter",
+      "label": "pordee-stats.js (Token Usage Reporter)",
+      "degree": 8
+    },
+    {
+      "id": "benchmarks_run_runbenchmark",
+      "label": "runBenchmark()",
+      "degree": 6
+    },
+    {
+      "id": "hooks_pordee_stats_formatshare",
+      "label": "formatShare()",
+      "degree": 5
+    },
+    {
+      "id": "hooks_pordee_stats_formatstats",
+      "label": "formatStats()",
+      "degree": 5
+    },
+    {
+      "id": "hooks_pordee_config_setstate",
+      "label": "setState()",
+      "degree": 5
+    },
+    {
+      "id": "benchmarks_run_main",
+      "label": "main()",
+      "degree": 5
+    },
+    {
+      "id": "pordee_userpromptsubmit_hook",
+      "label": "pordee-mode-tracker.js (UserPromptSubmit Hook)",
+      "degree": 5
+    }
+  ],
+  "surprises": [
+    {
+      "source": "main()",
+      "target": "getState()",
+      "source_files": [
+        "hooks/pordee-stats.js",
+        "hooks/pordee-config.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "pordee Claude Code Plugin",
+      "target": ".claude-plugin/plugin.json (Plugin Manifest)",
+      "source_files": [
+        "pordee-main/README.md",
+        "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "configured_by",
+      "why": "peripheral node `.claude-plugin/plugin.json (Plugin Manifest)` unexpectedly reaches hub `pordee Claude Code Plugin`"
+    },
+    {
+      "source": "pordee Claude Code Plugin",
+      "target": ".claude-plugin/marketplace.json (Marketplace Manifest)",
+      "source_files": [
+        "pordee-main/README.md",
+        "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "published_via",
+      "why": "peripheral node `.claude-plugin/marketplace.json (Marketplace Manifest)` unexpectedly reaches hub `pordee Claude Code Plugin`"
+    },
+    {
+      "source": "pordee Claude Code Plugin",
+      "target": "Node.js Built-in Test Runner (node --test)",
+      "source_files": [
+        "pordee-main/README.md",
+        "pordee-main/docs/superpowers/plans/2026-05-07-pordee-mvp.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "uses_for_testing",
+      "why": "peripheral node `Node.js Built-in Test Runner (node --test)` unexpectedly reaches hub `pordee Claude Code Plugin`"
+    },
+    {
+      "source": "pordee-config.js (State Helper)",
+      "target": "Atomic State Writes (write-then-rename pattern)",
+      "source_files": [
+        "pordee-main/docs/superpowers/plans/2026-05-07-pordee-mvp.md",
+        "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "implements",
+      "why": "peripheral node `Atomic State Writes (write-then-rename pattern)` unexpectedly reaches hub `pordee-config.js (State Helper)`"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `getState()` connect `Community 0` to `Community 4`, `Community 7`?",
+      "why": "High betweenness centrality (0.030) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `pordee-stats.js (Token Usage Reporter)` connect `Community 1` to `Community 10`?",
+      "why": "High betweenness centrality (0.012) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `{ test }`, `assert`, `fs` to the rest of the system?",
+      "why": "124 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.08 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 1` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.09 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 2` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.09 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 3` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.1 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

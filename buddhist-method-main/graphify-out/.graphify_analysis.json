@@ -1,0 +1,174 @@
+{
+  "communities": {
+    "0": [
+      "anatta_principle",
+      "buddhist_method_skill",
+      "kalama_principle",
+      "llm_failure_modes",
+      "pahana_principle",
+      "sati_sampajanna_principle",
+      "yoniso_principle"
+    ],
+    "1": [
+      "appamada_principle",
+      "atthatraya_principle",
+      "extended_principles",
+      "majjhima_patipada_principle",
+      "sappurisadhamma_principle"
+    ],
+    "2": [
+      "ariyasacca_debug",
+      "bhavana_step",
+      "four_noble_truths_debug_frame",
+      "sacchikiriya_step"
+    ],
+    "3": [
+      "pali_names_as_mnemonics",
+      "readme_en",
+      "readme_th"
+    ],
+    "4": [
+      "apayakosalla_principle",
+      "parinna_step",
+      "upekkha_principle"
+    ]
+  },
+  "cohesion": {
+    "0": 0.38,
+    "1": 0.4,
+    "2": 0.5,
+    "3": 1.0,
+    "4": 0.67
+  },
+  "gods": [
+    {
+      "id": "buddhist_method_skill",
+      "label": "Buddhist Method Skill (buddhist-method)",
+      "degree": 10
+    },
+    {
+      "id": "extended_principles",
+      "label": "Extended Principles Reference",
+      "degree": 6
+    },
+    {
+      "id": "four_noble_truths_debug_frame",
+      "label": "Four Noble Truths as Debugging Frame",
+      "degree": 5
+    },
+    {
+      "id": "pahana_principle",
+      "label": "Pah\u0101na (\u0e1b\u0e2b\u0e32\u0e19\u0e30) \u2014 Remove the cause, not the symptom",
+      "degree": 4
+    },
+    {
+      "id": "readme_en",
+      "label": "README (English) \u2014 Buddhist Method",
+      "degree": 3
+    },
+    {
+      "id": "sati_sampajanna_principle",
+      "label": "Sati-Sampaja\u00f1\u00f1a (\u0e2a\u0e15\u0e34-\u0e2a\u0e31\u0e21\u0e1b\u0e0a\u0e31\u0e0d\u0e0d\u0e30) \u2014 Mindfulness with clear comprehension",
+      "degree": 3
+    },
+    {
+      "id": "apayakosalla_principle",
+      "label": "Ap\u0101yakosalla (\u0e2d\u0e1b\u0e32\u0e22\u0e42\u0e01\u0e28\u0e25) \u2014 Skill in recognizing decline",
+      "degree": 3
+    },
+    {
+      "id": "readme_th",
+      "label": "README (Thai) \u2014 Buddhist Method",
+      "degree": 2
+    },
+    {
+      "id": "ariyasacca_debug",
+      "label": "Four Noble Truths as Debugging Frame (ariyasacca-debug)",
+      "degree": 2
+    },
+    {
+      "id": "kalama_principle",
+      "label": "Kal\u0101ma (\u0e01\u0e32\u0e25\u0e32\u0e21\u0e2a\u0e39\u0e15\u0e23) \u2014 Verify, do not trust pattern",
+      "degree": 2
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Appam\u0101da (\u0e2d\u0e31\u0e1b\u0e1b\u0e21\u0e32\u0e17\u0e30) \u2014 Heedfulness across long tasks",
+      "target": "Sati-Sampaja\u00f1\u00f1a (\u0e2a\u0e15\u0e34-\u0e2a\u0e31\u0e21\u0e1b\u0e0a\u0e31\u0e0d\u0e0d\u0e30) \u2014 Mindfulness with clear comprehension",
+      "source_files": [
+        "buddhist-method-main/references/extended-principles.md",
+        "buddhist-method-main/SKILL.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "Atthatraya \u2014 Three levels of benefit",
+      "target": "Pah\u0101na (\u0e1b\u0e2b\u0e32\u0e19\u0e30) \u2014 Remove the cause, not the symptom",
+      "source_files": [
+        "buddhist-method-main/references/extended-principles.md",
+        "buddhist-method-main/SKILL.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "Buddhist Method Skill (buddhist-method)",
+      "target": "Four Noble Truths as Debugging Frame (ariyasacca-debug)",
+      "source_files": [
+        "buddhist-method-main/SKILL.md",
+        "buddhist-method-main/references/ariyasacca-debug.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "bridges separate communities; peripheral node `Four Noble Truths as Debugging Frame (ariyasacca-debug)` unexpectedly reaches hub `Buddhist Method Skill (buddhist-method)`"
+    },
+    {
+      "source": "Ap\u0101yakosalla (\u0e2d\u0e1b\u0e32\u0e22\u0e42\u0e01\u0e28\u0e25) \u2014 Skill in recognizing decline",
+      "target": "Upekkh\u0101 (\u0e2d\u0e38\u0e40\u0e1a\u0e01\u0e02\u0e32) \u2014 Equanimity under pressure",
+      "source_files": [
+        "buddhist-method-main/references/extended-principles.md",
+        "buddhist-method-main/SKILL.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "README (English) \u2014 Buddhist Method",
+      "target": "Buddhist Method Skill (buddhist-method)",
+      "source_files": [
+        "buddhist-method-main/README.md",
+        "buddhist-method-main/SKILL.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "documents",
+      "why": "bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `Buddhist Method Skill (buddhist-method)` connect `Community 0` to `Community 1`, `Community 2`, `Community 3`, `Community 4`?",
+      "why": "High betweenness centrality (0.664) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Extended Principles Reference` connect `Community 1` to `Community 0`, `Community 4`?",
+      "why": "High betweenness centrality (0.303) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Four Noble Truths as Debugging Frame` connect `Community 2` to `Community 0`, `Community 4`?",
+      "why": "High betweenness centrality (0.228) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `Anatta (\u0e2d\u0e19\u0e31\u0e15\u0e15\u0e32) \u2014 Non-attachment to your own output`, `Sappurisadhamma (\u0e2a\u0e31\u0e1b\u0e1b\u0e38\u0e23\u0e34\u0e2a\u0e18\u0e23\u0e23\u0e21) \u2014 Knowing self, time, audience`, `Majjhim\u0101 Pa\u1e6dipad\u0101 (\u0e21\u0e31\u0e0a\u0e0c\u0e34\u0e21\u0e32\u0e1b\u0e0f\u0e34\u0e1b\u0e17\u0e32) \u2014 Middle Way for solution sizing` to the rest of the system?",
+      "why": "6 weakly-connected nodes found - possible documentation gaps or missing edges."
+    }
+  ]
+}

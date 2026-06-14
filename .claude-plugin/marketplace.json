@@ -1,0 +1,12 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claude-smartwork",
+  "owner": {
+    "name": "kanganapong sriduang"
+  },
+  "metadata": {
+    "description": "Plugins, skills, and hooks that make Claude Code more token-efficient and improve how it reasons about a task.",
+    "version": "0.1.0"
+  },
+  "plugins": []
+}

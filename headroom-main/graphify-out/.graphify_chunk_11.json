@@ -1,0 +1,1089 @@
+{
+  "nodes": [
+    {
+      "id": "headroom_project",
+      "label": "Headroom — Context Compression Layer for AI Agents",
+      "file_type": "document",
+      "source_file": "headroom-main/README.md",
+      "source_location": "headroom-main/README.md",
+      "source_url": "https://github.com/chopratejas/headroom",
+      "captured_at": null,
+      "author": "chopratejas",
+      "contributor": null
+    },
+    {
+      "id": "install_ps1_script",
+      "label": "Windows PowerShell Docker-native installer (install.ps1)",
+      "file_type": "code",
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "make_shim_ps1",
+      "label": "E2E test noop shim creator (make_shim.ps1)",
+      "file_type": "code",
+      "source_file": "headroom-main/e2e/_lib/make_shim.ps1",
+      "source_location": "headroom-main/e2e/_lib/make_shim.ps1",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "sql_proxy_telemetry_v2",
+      "label": "SQL: proxy_telemetry_v2 table (create)",
+      "file_type": "code",
+      "source_file": "headroom-main/sql/create_proxy_telemetry_v2.sql",
+      "source_location": "headroom-main/sql/create_proxy_telemetry_v2.sql",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "sql_dashboard_summary",
+      "label": "SQL: dashboard_summary table (create + pg_cron refresh)",
+      "file_type": "code",
+      "source_file": "headroom-main/sql/create_dashboard_summary.sql",
+      "source_location": "headroom-main/sql/create_dashboard_summary.sql",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "sql_upgrade_dashboard_v2",
+      "label": "SQL: upgrade dashboard_summary — add hourly_stats column",
+      "file_type": "code",
+      "source_file": "headroom-main/sql/upgrade_dashboard_v2.sql",
+      "source_location": "headroom-main/sql/upgrade_dashboard_v2.sql",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "sql_upgrade_telemetry_cache_bust",
+      "label": "SQL: upgrade proxy_telemetry_v2 — cache_bust_tokens column",
+      "file_type": "code",
+      "source_file": "headroom-main/sql/upgrade_telemetry_cache_bust.sql",
+      "source_location": "headroom-main/sql/upgrade_telemetry_cache_bust.sql",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "sql_upgrade_telemetry_stack_context",
+      "label": "SQL: upgrade proxy_telemetry_v2 — headroom_stack, install_mode, requests_by_stack",
+      "file_type": "code",
+      "source_file": "headroom-main/sql/upgrade_telemetry_stack_context.sql",
+      "source_location": "headroom-main/sql/upgrade_telemetry_stack_context.sql",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docker_compose_yml",
+      "label": "Docker Compose config (headroom-proxy + qdrant + neo4j)",
+      "file_type": "code",
+      "source_file": "headroom-main/docker-compose.yml",
+      "source_location": "headroom-main/docker-compose.yml",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "llms_txt",
+      "label": "llms.txt — machine-readable Headroom docs index",
+      "file_type": "document",
+      "source_file": "headroom-main/llms.txt",
+      "source_location": "headroom-main/llms.txt",
+      "source_url": "https://headroom-docs.vercel.app/llms.txt",
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "changelog_md",
+      "label": "CHANGELOG.md — Headroom version history",
+      "file_type": "document",
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "enterprise_md",
+      "label": "ENTERPRISE.md — Enterprise support contact",
+      "file_type": "document",
+      "source_file": "headroom-main/ENTERPRISE.md",
+      "source_location": "headroom-main/ENTERPRISE.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rust_dev_md",
+      "label": "RUST_DEV.md — Rust rewrite developer guide",
+      "file_type": "document",
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "signals_readme",
+      "label": "signals/README.md — Rust detection trait architecture",
+      "file_type": "document",
+      "source_file": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_location": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "tag_protector_proptest",
+      "label": "proptest regression seeds for tag_protector transform",
+      "file_type": "code",
+      "source_file": "headroom-main/crates/headroom-core/proptest-regressions/transforms/tag_protector.txt",
+      "source_location": "headroom-main/crates/headroom-core/proptest-regressions/transforms/tag_protector.txt",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "codecov_yml",
+      "label": "codecov.yml — coverage gating config",
+      "file_type": "code",
+      "source_file": "headroom-main/codecov.yml",
+      "source_location": "headroom-main/codecov.yml",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "mkdocs_yml",
+      "label": "mkdocs.yml — documentation site config",
+      "file_type": "code",
+      "source_file": "headroom-main/mkdocs.yml",
+      "source_location": "headroom-main/mkdocs.yml",
+      "source_url": "https://headroom-docs.vercel.app/docs",
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "db_table_proxy_telemetry_v2",
+      "label": "DB Table: proxy_telemetry_v2 (Supabase/PostgreSQL)",
+      "file_type": "code",
+      "source_file": "headroom-main/sql/create_proxy_telemetry_v2.sql",
+      "source_location": "headroom-main/sql/create_proxy_telemetry_v2.sql",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "db_table_dashboard_summary",
+      "label": "DB Table: dashboard_summary (single-row aggregate, hourly refresh via pg_cron)",
+      "file_type": "code",
+      "source_file": "headroom-main/sql/create_dashboard_summary.sql",
+      "source_location": "headroom-main/sql/create_dashboard_summary.sql",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "fn_refresh_dashboard_summary",
+      "label": "SQL Function: refresh_dashboard_summary() — aggregates telemetry into dashboard",
+      "file_type": "code",
+      "source_file": "headroom-main/sql/create_dashboard_summary.sql",
+      "source_location": "headroom-main/sql/create_dashboard_summary.sql#L27",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rust_crate_headroom_core",
+      "label": "Rust crate: headroom-core (shared types + transform trait surface)",
+      "file_type": "code",
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rust_crate_headroom_proxy",
+      "label": "Rust crate: headroom-proxy (axum-based transparent reverse proxy binary)",
+      "file_type": "code",
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rust_crate_headroom_py",
+      "label": "Rust crate: headroom-py (PyO3 cdylib exposing headroom._core)",
+      "file_type": "code",
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rust_crate_headroom_parity",
+      "label": "Rust crate: headroom-parity (Python parity test harness)",
+      "file_type": "code",
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "signals_line_importance_detector",
+      "label": "Rust trait: LineImportanceDetector (line-granularity signal)",
+      "file_type": "code",
+      "source_file": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_location": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "signals_keyword_detector",
+      "label": "Rust struct: KeywordDetector (aho-corasick, sole registered tier)",
+      "file_type": "code",
+      "source_file": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_location": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "signals_tiered_combinator",
+      "label": "Rust struct: Tiered<T> — ordered detector tier combinator",
+      "file_type": "code",
+      "source_file": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_location": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "ccr_backends",
+      "label": "CCR backend store: InMemoryCcrStore / SqliteCcrStore / RedisCcrStore",
+      "file_type": "code",
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docker_image_headroom",
+      "label": "Docker image: ghcr.io/chopratejas/headroom:latest",
+      "file_type": "document",
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L3",
+      "source_url": "https://ghcr.io/chopratejas/headroom",
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "changelog_v0_25_0",
+      "label": "Release v0.25.0 (2026-06-12) — Vertex AI routing, OAuth2 upstream auth, dashboard light mode, safety rails",
+      "file_type": "document",
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L25",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "changelog_v0_24_0",
+      "label": "Release v0.24.0 (2026-06-08) — headroom perf format, CLAUDE_CODE_USE_FOUNDRY support",
+      "file_type": "document",
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L94",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "changelog_v0_23_0",
+      "label": "Release v0.23.0 (2026-06-04) — GitHub Copilot subscription mode",
+      "file_type": "document",
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L155",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "changelog_v0_5_22",
+      "label": "Release v0.5.22 (2026-04-11) — Cross-agent memory, headroom learn, code graph integration",
+      "file_type": "document",
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L431",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "changelog_v0_2_0",
+      "label": "Release v0.2.0 (2025-01-07) — SmartCrusher, CacheAligner, RollingWindow, Proxy Server",
+      "file_type": "document",
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L557",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "changelog_v0_1_0",
+      "label": "Release v0.1.0 (2025-01-05) — Initial release, HeadroomClient, ToolCrusher",
+      "file_type": "document",
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L602",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "wrapper_headroom_ps1",
+      "label": "Generated headroom.ps1 Docker-native wrapper script",
+      "file_type": "code",
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L64",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "wrap_command_claude",
+      "label": "headroom wrap claude — proxy-wrapped Claude Code launch",
+      "file_type": "code",
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L1679",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "wrap_command_openclaw",
+      "label": "headroom wrap openclaw — OpenClaw ContextEngine plugin integration",
+      "file_type": "code",
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L1301",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "persistent_docker_install",
+      "label": "headroom install apply — persistent Docker deployment profile management",
+      "file_type": "code",
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L480",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rtk_integration",
+      "label": "RTK (Rust Token Killer) integration — Claude hooks registration via rtk init",
+      "file_type": "code",
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L828",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "lean_ctx_integration",
+      "label": "lean-ctx alternative context tool integration (HEADROOM_CONTEXT_TOOL=lean-ctx)",
+      "file_type": "code",
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L858",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docker_service_qdrant",
+      "label": "Docker service: qdrant v1.17.1 (vector database for semantic search)",
+      "file_type": "code",
+      "source_file": "headroom-main/docker-compose.yml",
+      "source_location": "headroom-main/docker-compose.yml#L23",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docker_service_neo4j",
+      "label": "Docker service: neo4j 5.26 (graph database for relationships)",
+      "file_type": "code",
+      "source_file": "headroom-main/docker-compose.yml",
+      "source_location": "headroom-main/docker-compose.yml#L33",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "filesystem_contract",
+      "label": "Canonical filesystem contract: HEADROOM_CONFIG_DIR + HEADROOM_WORKSPACE_DIR env vars",
+      "file_type": "document",
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md (issue #175)",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "proxy_port_default",
+      "label": "Default proxy port: 8787",
+      "file_type": "document",
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L649",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "install_ps1_script",
+      "target": "docker_image_headroom",
+      "relation": "pulls_docker_image",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L3",
+      "weight": 1.0
+    },
+    {
+      "source": "install_ps1_script",
+      "target": "wrapper_headroom_ps1",
+      "relation": "generates",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L64",
+      "weight": 1.0
+    },
+    {
+      "source": "install_ps1_script",
+      "target": "persistent_docker_install",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L480",
+      "weight": 1.0
+    },
+    {
+      "source": "install_ps1_script",
+      "target": "wrap_command_claude",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L1679",
+      "weight": 1.0
+    },
+    {
+      "source": "install_ps1_script",
+      "target": "wrap_command_openclaw",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L1301",
+      "weight": 1.0
+    },
+    {
+      "source": "install_ps1_script",
+      "target": "rtk_integration",
+      "relation": "integrates",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L828",
+      "weight": 0.9
+    },
+    {
+      "source": "install_ps1_script",
+      "target": "lean_ctx_integration",
+      "relation": "integrates",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L858",
+      "weight": 0.9
+    },
+    {
+      "source": "install_ps1_script",
+      "target": "filesystem_contract",
+      "relation": "enforces",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L141",
+      "weight": 0.9
+    },
+    {
+      "source": "sql_proxy_telemetry_v2",
+      "target": "db_table_proxy_telemetry_v2",
+      "relation": "creates",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/create_proxy_telemetry_v2.sql",
+      "source_location": "headroom-main/sql/create_proxy_telemetry_v2.sql#L5",
+      "weight": 1.0
+    },
+    {
+      "source": "sql_upgrade_telemetry_cache_bust",
+      "target": "db_table_proxy_telemetry_v2",
+      "relation": "alters",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/upgrade_telemetry_cache_bust.sql",
+      "source_location": "headroom-main/sql/upgrade_telemetry_cache_bust.sql",
+      "weight": 1.0
+    },
+    {
+      "source": "sql_upgrade_telemetry_stack_context",
+      "target": "db_table_proxy_telemetry_v2",
+      "relation": "alters",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/upgrade_telemetry_stack_context.sql",
+      "source_location": "headroom-main/sql/upgrade_telemetry_stack_context.sql",
+      "weight": 1.0
+    },
+    {
+      "source": "sql_upgrade_telemetry_cache_bust",
+      "target": "db_table_dashboard_summary",
+      "relation": "alters",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/upgrade_telemetry_cache_bust.sql",
+      "source_location": "headroom-main/sql/upgrade_telemetry_cache_bust.sql#L18",
+      "weight": 0.9
+    },
+    {
+      "source": "sql_dashboard_summary",
+      "target": "db_table_dashboard_summary",
+      "relation": "creates",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/create_dashboard_summary.sql",
+      "source_location": "headroom-main/sql/create_dashboard_summary.sql#L5",
+      "weight": 1.0
+    },
+    {
+      "source": "sql_dashboard_summary",
+      "target": "fn_refresh_dashboard_summary",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/create_dashboard_summary.sql",
+      "source_location": "headroom-main/sql/create_dashboard_summary.sql#L27",
+      "weight": 1.0
+    },
+    {
+      "source": "sql_upgrade_dashboard_v2",
+      "target": "db_table_dashboard_summary",
+      "relation": "alters",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/upgrade_dashboard_v2.sql",
+      "source_location": "headroom-main/sql/upgrade_dashboard_v2.sql#L5",
+      "weight": 1.0
+    },
+    {
+      "source": "sql_upgrade_dashboard_v2",
+      "target": "fn_refresh_dashboard_summary",
+      "relation": "replaces",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/upgrade_dashboard_v2.sql",
+      "source_location": "headroom-main/sql/upgrade_dashboard_v2.sql#L9",
+      "weight": 1.0
+    },
+    {
+      "source": "fn_refresh_dashboard_summary",
+      "target": "db_table_proxy_telemetry_v2",
+      "relation": "reads_from",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/create_dashboard_summary.sql",
+      "source_location": "headroom-main/sql/create_dashboard_summary.sql#L49",
+      "weight": 1.0
+    },
+    {
+      "source": "fn_refresh_dashboard_summary",
+      "target": "db_table_dashboard_summary",
+      "relation": "writes_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/create_dashboard_summary.sql",
+      "source_location": "headroom-main/sql/create_dashboard_summary.sql#L165",
+      "weight": 1.0
+    },
+    {
+      "source": "docker_compose_yml",
+      "target": "docker_image_headroom",
+      "relation": "builds",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/docker-compose.yml",
+      "source_location": "headroom-main/docker-compose.yml#L2",
+      "weight": 1.0
+    },
+    {
+      "source": "docker_compose_yml",
+      "target": "docker_service_qdrant",
+      "relation": "defines_service",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/docker-compose.yml",
+      "source_location": "headroom-main/docker-compose.yml#L23",
+      "weight": 1.0
+    },
+    {
+      "source": "docker_compose_yml",
+      "target": "docker_service_neo4j",
+      "relation": "defines_service",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/docker-compose.yml",
+      "source_location": "headroom-main/docker-compose.yml#L33",
+      "weight": 1.0
+    },
+    {
+      "source": "docker_image_headroom",
+      "target": "docker_service_qdrant",
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/docker-compose.yml",
+      "source_location": "headroom-main/docker-compose.yml#L18",
+      "weight": 1.0
+    },
+    {
+      "source": "docker_image_headroom",
+      "target": "docker_service_neo4j",
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/docker-compose.yml",
+      "source_location": "headroom-main/docker-compose.yml#L19",
+      "weight": 1.0
+    },
+    {
+      "source": "rust_dev_md",
+      "target": "rust_crate_headroom_core",
+      "relation": "documents",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md#L10",
+      "weight": 1.0
+    },
+    {
+      "source": "rust_dev_md",
+      "target": "rust_crate_headroom_proxy",
+      "relation": "documents",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md#L11",
+      "weight": 1.0
+    },
+    {
+      "source": "rust_dev_md",
+      "target": "rust_crate_headroom_py",
+      "relation": "documents",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md#L12",
+      "weight": 1.0
+    },
+    {
+      "source": "rust_dev_md",
+      "target": "rust_crate_headroom_parity",
+      "relation": "documents",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md#L13",
+      "weight": 1.0
+    },
+    {
+      "source": "rust_dev_md",
+      "target": "ccr_backends",
+      "relation": "documents",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md#L300",
+      "weight": 1.0
+    },
+    {
+      "source": "signals_readme",
+      "target": "signals_line_importance_detector",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_location": "headroom-main/crates/headroom-core/src/signals/README.md#L8",
+      "weight": 1.0
+    },
+    {
+      "source": "signals_readme",
+      "target": "signals_keyword_detector",
+      "relation": "documents",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_location": "headroom-main/crates/headroom-core/src/signals/README.md#L15",
+      "weight": 1.0
+    },
+    {
+      "source": "signals_readme",
+      "target": "signals_tiered_combinator",
+      "relation": "documents",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_location": "headroom-main/crates/headroom-core/src/signals/README.md#L13",
+      "weight": 1.0
+    },
+    {
+      "source": "signals_keyword_detector",
+      "target": "signals_tiered_combinator",
+      "relation": "registered_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_location": "headroom-main/crates/headroom-core/src/signals/README.md#L15",
+      "weight": 1.0
+    },
+    {
+      "source": "signals_tiered_combinator",
+      "target": "signals_line_importance_detector",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_location": "headroom-main/crates/headroom-core/src/signals/README.md#L13",
+      "weight": 0.85
+    },
+    {
+      "source": "rust_crate_headroom_core",
+      "target": "signals_line_importance_detector",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "source_location": "headroom-main/crates/headroom-core/src/signals/README.md",
+      "weight": 1.0
+    },
+    {
+      "source": "rust_crate_headroom_core",
+      "target": "tag_protector_proptest",
+      "relation": "has_proptest_regression_seeds",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/crates/headroom-core/proptest-regressions/transforms/tag_protector.txt",
+      "source_location": "headroom-main/crates/headroom-core/proptest-regressions/transforms/tag_protector.txt",
+      "weight": 0.8
+    },
+    {
+      "source": "rust_crate_headroom_core",
+      "target": "ccr_backends",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md#L298",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_md",
+      "target": "changelog_v0_25_0",
+      "relation": "contains_entry",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L25",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_md",
+      "target": "changelog_v0_24_0",
+      "relation": "contains_entry",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L94",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_md",
+      "target": "changelog_v0_23_0",
+      "relation": "contains_entry",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L155",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_md",
+      "target": "changelog_v0_5_22",
+      "relation": "contains_entry",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L431",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_md",
+      "target": "changelog_v0_2_0",
+      "relation": "contains_entry",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L557",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_md",
+      "target": "changelog_v0_1_0",
+      "relation": "contains_entry",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md#L602",
+      "weight": 1.0
+    },
+    {
+      "source": "headroom_project",
+      "target": "llms_txt",
+      "relation": "provides",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/llms.txt",
+      "source_location": "headroom-main/llms.txt",
+      "weight": 0.9
+    },
+    {
+      "source": "headroom_project",
+      "target": "docker_compose_yml",
+      "relation": "ships_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/docker-compose.yml",
+      "source_location": "headroom-main/docker-compose.yml",
+      "weight": 1.0
+    },
+    {
+      "source": "headroom_project",
+      "target": "enterprise_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/README.md",
+      "source_location": "headroom-main/README.md#L31",
+      "weight": 0.7
+    },
+    {
+      "source": "headroom_project",
+      "target": "mkdocs_yml",
+      "relation": "documented_by",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/mkdocs.yml",
+      "source_location": "headroom-main/mkdocs.yml",
+      "weight": 0.9
+    },
+    {
+      "source": "headroom_project",
+      "target": "changelog_md",
+      "relation": "tracked_by",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md",
+      "weight": 1.0
+    },
+    {
+      "source": "headroom_project",
+      "target": "rust_dev_md",
+      "relation": "documented_by",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/RUST_DEV.md",
+      "source_location": "headroom-main/RUST_DEV.md",
+      "weight": 1.0
+    },
+    {
+      "source": "headroom_project",
+      "target": "codecov_yml",
+      "relation": "covered_by",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/codecov.yml",
+      "source_location": "headroom-main/codecov.yml",
+      "weight": 0.8
+    },
+    {
+      "source": "headroom_project",
+      "target": "proxy_port_default",
+      "relation": "uses_default",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L649",
+      "weight": 1.0
+    },
+    {
+      "source": "wrap_command_claude",
+      "target": "rtk_integration",
+      "relation": "invokes",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/scripts/install.ps1",
+      "source_location": "headroom-main/scripts/install.ps1#L1680",
+      "weight": 1.0
+    },
+    {
+      "source": "sql_upgrade_telemetry_stack_context",
+      "target": "changelog_v0_5_22",
+      "relation": "referenced_by",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/CHANGELOG.md",
+      "source_location": "headroom-main/CHANGELOG.md (telemetry stack section)",
+      "weight": 0.9
+    },
+    {
+      "source": "make_shim_ps1",
+      "target": "headroom_project",
+      "relation": "supports_e2e_testing_of",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/e2e/_lib/make_shim.ps1",
+      "source_location": "headroom-main/e2e/_lib/make_shim.ps1",
+      "weight": 0.8
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "telemetry_schema_evolution",
+      "label": "proxy_telemetry_v2 schema evolution: create → add cache_bust_tokens → add stack/install_mode",
+      "nodes": ["sql_proxy_telemetry_v2", "sql_upgrade_telemetry_cache_bust", "sql_upgrade_telemetry_stack_context", "db_table_proxy_telemetry_v2"],
+      "relation": "schema_migration_chain",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/create_proxy_telemetry_v2.sql"
+    },
+    {
+      "id": "dashboard_schema_evolution",
+      "label": "dashboard_summary schema evolution: create → add hourly_stats → drop cache_bust_stats",
+      "nodes": ["sql_dashboard_summary", "sql_upgrade_dashboard_v2", "sql_upgrade_telemetry_cache_bust", "db_table_dashboard_summary", "fn_refresh_dashboard_summary"],
+      "relation": "schema_migration_chain",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/sql/create_dashboard_summary.sql"
+    },
+    {
+      "id": "rust_workspace_crates",
+      "label": "Rust workspace: headroom-core + headroom-proxy + headroom-py + headroom-parity",
+      "nodes": ["rust_crate_headroom_core", "rust_crate_headroom_proxy", "rust_crate_headroom_py", "rust_crate_headroom_parity"],
+      "relation": "rust_workspace_members",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/RUST_DEV.md"
+    },
+    {
+      "id": "signals_trait_hierarchy",
+      "label": "Rust signals module: Tiered<T> combinator over KeywordDetector implementing LineImportanceDetector",
+      "nodes": ["signals_tiered_combinator", "signals_keyword_detector", "signals_line_importance_detector", "rust_crate_headroom_core"],
+      "relation": "trait_implementation_hierarchy",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/crates/headroom-core/src/signals/README.md"
+    },
+    {
+      "id": "docker_memory_stack",
+      "label": "Docker memory stack: headroom-proxy + qdrant (vector DB) + neo4j (graph DB)",
+      "nodes": ["docker_image_headroom", "docker_service_qdrant", "docker_service_neo4j", "docker_compose_yml"],
+      "relation": "docker_compose_service_group",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/docker-compose.yml"
+    },
+    {
+      "id": "windows_install_flow",
+      "label": "Windows install flow: install.ps1 → pulls Docker image → writes headroom.ps1 + headroom.cmd → adds to PATH",
+      "nodes": ["install_ps1_script", "docker_image_headroom", "wrapper_headroom_ps1"],
+      "relation": "install_flow",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "headroom-main/scripts/install.ps1"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -1,0 +1,32 @@
+{
+  "name": "pordee",
+  "description": "โหมดสื่อสารแบบกระชับสำหรับภาษาไทย+อังกฤษ ลด token ~60-75% โดยพูดไทยสั้นๆ แต่ยังถูกต้องทาง technical (Pordee — terse Thai+English mode for Claude Code, cuts ~60-75% tokens while keeping full technical accuracy.)",
+  "author": {
+    "name": "Vatunyoo Suwannapisit"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/pordee-activate.js\"",
+            "timeout": 5,
+            "statusMessage": "Loading pordee mode..."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/pordee-mode-tracker.js\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

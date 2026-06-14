@@ -1,0 +1,25 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Pordee state (not committed; user-local)
+.pordee/
+
+# Test artifacts
+*.tmp
+state.json.tmp
+
+# Benchmark results (generated from API calls)
+benchmarks/results/
+benchmarks/compression.json
+
+ruvector.db

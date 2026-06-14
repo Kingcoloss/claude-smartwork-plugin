@@ -1,0 +1,864 @@
+{
+  "nodes": [
+    {
+      "id": "pordee_plugin",
+      "label": "pordee Claude Code Plugin",
+      "file_type": "document",
+      "source_file": "pordee-main/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": "Vatunyoo Suwannapisit",
+      "contributor": null
+    },
+    {
+      "id": "pordee_thai_compression_mode",
+      "label": "Thai+English Compression Mode",
+      "file_type": "document",
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 9",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_token_savings",
+      "label": "60-75% Token Savings",
+      "file_type": "document",
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 11",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_lite_mode",
+      "label": "Pordee Lite Mode",
+      "file_type": "document",
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 59",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_full_mode",
+      "label": "Pordee Full Mode",
+      "file_type": "document",
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 63",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_state_json",
+      "label": "~/.pordee/state.json (Persistent State File)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 67",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_sessionstart_hook",
+      "label": "pordee-activate.js (SessionStart Hook)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 228",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_userpromptsubmit_hook",
+      "label": "pordee-mode-tracker.js (UserPromptSubmit Hook)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 242",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_config_js",
+      "label": "pordee-config.js (State Helper)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-07-pordee-mvp.md",
+      "source_location": "line 22",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_trigger_parsing",
+      "label": "Trigger Parsing (9 trigger patterns)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 254",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_auto_clarity",
+      "label": "Auto-Clarity (Temporarily Disable Compression)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 207",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_boundaries",
+      "label": "Boundaries (Code/Commits/Errors Stay Normal)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 217",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_compression_rules",
+      "label": "Thai Compression Rules (Drop List + Terse Swaps)",
+      "file_type": "document",
+      "source_file": "pordee-main/skills/pordee/SKILL.md",
+      "source_location": "line 22",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_skill_md",
+      "label": "skills/pordee/SKILL.md",
+      "file_type": "document",
+      "source_file": "pordee-main/skills/pordee/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_stats_skill_md",
+      "label": "skills/pordee-stats/SKILL.md",
+      "file_type": "document",
+      "source_file": "pordee-main/skills/pordee-stats/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_stats_reporter",
+      "label": "pordee-stats.js (Token Usage Reporter)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-10-pordee-stats.md",
+      "source_location": "line 16",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_benchmark_runner",
+      "label": "benchmarks/run.js (API Benchmark Runner)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-10-pordee-stats.md",
+      "source_location": "line 59",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_compression_json",
+      "label": "benchmarks/compression.json (Median Ratio Lookup)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": "line 143",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_benchmark_prompts",
+      "label": "benchmarks/prompts.json (8 Thai Dev Prompts)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-10-pordee-stats.md",
+      "source_location": "line 29",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_history_jsonl",
+      "label": "~/.pordee/history.jsonl (Lifetime Session History)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": "line 97",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_plugin_json",
+      "label": ".claude-plugin/plugin.json (Plugin Manifest)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 279",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_marketplace_json",
+      "label": ".claude-plugin/marketplace.json (Marketplace Manifest)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 303",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "caveman_plugin",
+      "label": "caveman (Inspiration Plugin by JuliusBrussee)",
+      "file_type": "document",
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 5",
+      "source_url": "https://github.com/JuliusBrussee/caveman",
+      "captured_at": null,
+      "author": "JuliusBrussee",
+      "contributor": null
+    },
+    {
+      "id": "pordee_design_spec",
+      "label": "pordee Design Spec (2026-05-07)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": "Vatunyoo Suwannapisit",
+      "contributor": null
+    },
+    {
+      "id": "pordee_stats_design_spec",
+      "label": "pordee-stats Design Spec (2026-05-10)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": "Vatunyoo Suwannapisit",
+      "contributor": null
+    },
+    {
+      "id": "pordee_mvp_plan",
+      "label": "pordee MVP Implementation Plan (2026-05-07)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-07-pordee-mvp.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_stats_plan",
+      "label": "pordee-stats + Benchmark Plan (2026-05-10)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-10-pordee-stats.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_atomic_state_write",
+      "label": "Atomic State Writes (write-then-rename pattern)",
+      "file_type": "rationale",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 88",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_polite_particle_drop",
+      "label": "Drop Thai Polite Particles (ครับ/ค่ะ/นะคะ)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 122",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_thai_dev_examples",
+      "label": "Thai Dev Before/After Examples (6 examples)",
+      "file_type": "document",
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 70",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_median_compression_ratio",
+      "label": "Median Compression Ratio (data-driven from benchmarks)",
+      "file_type": "rationale",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": "line 22",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_node_test_runner",
+      "label": "Node.js Built-in Test Runner (node --test)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-07-pordee-mvp.md",
+      "source_location": "line 37",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_code_fence_skip",
+      "label": "Skip Trigger Detection Inside Code Fences",
+      "file_type": "rationale",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 266",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_error_log",
+      "label": "~/.pordee/error.log (Silent Error Logging)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 270",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_statusline_suffix",
+      "label": "~/.pordee/statusline-suffix (Statusline Badge File)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-10-pordee-stats.md",
+      "source_location": "line 718",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_usd_cost_estimate",
+      "label": "USD Cost Estimate (model-based pricing lookup)",
+      "file_type": "document",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": "line 97",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pordee_caveman_stats_adaptation",
+      "label": "Adaptation of caveman-stats.js for pordee",
+      "file_type": "rationale",
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": "line 92",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "pordee_plugin",
+      "target": "caveman_plugin",
+      "relation": "inspired_by",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 5",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_plugin",
+      "target": "pordee_thai_compression_mode",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 9",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_thai_compression_mode",
+      "target": "pordee_token_savings",
+      "relation": "produces",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 11",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_plugin",
+      "target": "pordee_lite_mode",
+      "relation": "has_feature",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 57",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_plugin",
+      "target": "pordee_full_mode",
+      "relation": "has_feature",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 61",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_plugin",
+      "target": "pordee_sessionstart_hook",
+      "relation": "registers",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 283",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_plugin",
+      "target": "pordee_userpromptsubmit_hook",
+      "relation": "registers",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 291",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_sessionstart_hook",
+      "target": "pordee_state_json",
+      "relation": "reads",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 232",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_userpromptsubmit_hook",
+      "target": "pordee_state_json",
+      "relation": "reads_and_writes",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 242",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_userpromptsubmit_hook",
+      "target": "pordee_trigger_parsing",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 246",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_trigger_parsing",
+      "target": "pordee_code_fence_skip",
+      "relation": "applies",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 266",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_sessionstart_hook",
+      "target": "pordee_config_js",
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-07-pordee-mvp.md",
+      "source_location": "line 22",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_userpromptsubmit_hook",
+      "target": "pordee_config_js",
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-07-pordee-mvp.md",
+      "source_location": "line 22",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_config_js",
+      "target": "pordee_state_json",
+      "relation": "manages",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-07-pordee-mvp.md",
+      "source_location": "line 165",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_config_js",
+      "target": "pordee_atomic_state_write",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 88",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_plugin",
+      "target": "pordee_skill_md",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 55",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_plugin",
+      "target": "pordee_stats_skill_md",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/skills/pordee-stats/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_skill_md",
+      "target": "pordee_compression_rules",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/skills/pordee/SKILL.md",
+      "source_location": "line 22",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_compression_rules",
+      "target": "pordee_polite_particle_drop",
+      "relation": "includes",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/skills/pordee/SKILL.md",
+      "source_location": "line 23",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_skill_md",
+      "target": "pordee_auto_clarity",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/skills/pordee/SKILL.md",
+      "source_location": "line 83",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_skill_md",
+      "target": "pordee_boundaries",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/skills/pordee/SKILL.md",
+      "source_location": "line 91",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_plugin",
+      "target": "pordee_plugin_json",
+      "relation": "configured_by",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 278",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_plugin",
+      "target": "pordee_marketplace_json",
+      "relation": "published_via",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 303",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_stats_reporter",
+      "target": "pordee_compression_json",
+      "relation": "reads",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": "line 53",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_benchmark_runner",
+      "target": "pordee_compression_json",
+      "relation": "generates",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-10-pordee-stats.md",
+      "source_location": "line 175",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_benchmark_runner",
+      "target": "pordee_benchmark_prompts",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-10-pordee-stats.md",
+      "source_location": "line 78",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_compression_json",
+      "target": "pordee_median_compression_ratio",
+      "relation": "stores",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": "line 22",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_stats_reporter",
+      "target": "pordee_history_jsonl",
+      "relation": "appends_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-10-pordee-stats.md",
+      "source_location": "line 707",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_stats_reporter",
+      "target": "pordee_statusline_suffix",
+      "relation": "writes",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-10-pordee-stats.md",
+      "source_location": "line 718",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_stats_reporter",
+      "target": "pordee_usd_cost_estimate",
+      "relation": "computes",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": "line 97",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_userpromptsubmit_hook",
+      "target": "pordee_stats_reporter",
+      "relation": "invokes",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": "line 177",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_stats_skill_md",
+      "target": "pordee_stats_reporter",
+      "relation": "delivered_by",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/skills/pordee-stats/SKILL.md",
+      "source_location": "line 10",
+      "weight": 1.0
+    },
+    {
+      "source": "pordee_config_js",
+      "target": "pordee_error_log",
+      "relation": "writes_on_failure",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md",
+      "source_location": "line 270",
+      "weight": 0.8
+    },
+    {
+      "source": "pordee_stats_reporter",
+      "target": "caveman_plugin",
+      "relation": "adapted_from",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": "line 92",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_design_spec",
+      "target": "pordee_mvp_plan",
+      "relation": "referenced_by",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-07-pordee-mvp.md",
+      "source_location": "line 12",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_stats_design_spec",
+      "target": "pordee_stats_plan",
+      "relation": "referenced_by",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-10-pordee-stats.md",
+      "source_location": "line 1",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_plugin",
+      "target": "pordee_node_test_runner",
+      "relation": "uses_for_testing",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/plans/2026-05-07-pordee-mvp.md",
+      "source_location": "line 37",
+      "weight": 0.8
+    },
+    {
+      "source": "pordee_thai_compression_mode",
+      "target": "caveman_plugin",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 5",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_stats_reporter",
+      "target": "pordee_caveman_stats_adaptation",
+      "relation": "documented_by",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md",
+      "source_location": "line 92",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_lite_mode",
+      "target": "pordee_polite_particle_drop",
+      "relation": "applies",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/skills/pordee/SKILL.md",
+      "source_location": "line 52",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_full_mode",
+      "target": "pordee_polite_particle_drop",
+      "relation": "applies",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/skills/pordee/SKILL.md",
+      "source_location": "line 54",
+      "weight": 0.9
+    },
+    {
+      "source": "pordee_thai_dev_examples",
+      "target": "pordee_thai_compression_mode",
+      "relation": "demonstrates",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/README.md",
+      "source_location": "line 70",
+      "weight": 0.8
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "he_pordee_compression_pipeline",
+      "label": "pordee Token Compression Pipeline",
+      "nodes": ["pordee_sessionstart_hook", "pordee_userpromptsubmit_hook", "pordee_state_json", "pordee_skill_md"],
+      "relation": "together_implement",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "pordee-main/README.md"
+    },
+    {
+      "id": "he_pordee_stats_pipeline",
+      "label": "pordee Stats + Benchmark Data Pipeline",
+      "nodes": ["pordee_benchmark_runner", "pordee_compression_json", "pordee_stats_reporter"],
+      "relation": "form_data_pipeline",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-10-pordee-stats-design.md"
+    },
+    {
+      "id": "he_pordee_plugin_manifest",
+      "label": "pordee Plugin Distribution Stack",
+      "nodes": ["pordee_plugin_json", "pordee_marketplace_json", "pordee_plugin"],
+      "relation": "enable_distribution_of",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pordee-main/docs/superpowers/specs/2026-05-07-pordee-design.md"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

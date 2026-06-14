@@ -1,0 +1,10 @@
+[
+  { "id": "jwt-auth", "prompt": "อธิบายวิธีทำ authentication ด้วย JWT ใน Node.js" },
+  { "id": "slow-query", "prompt": "ทำไม database query ช้า มีวิธี optimize ไหม" },
+  { "id": "rest-api", "prompt": "สร้าง REST API ด้วย Express ที่มี CRUD สำหรับ user" },
+  { "id": "redis-vs-memcached", "prompt": "เปรียบเทียบ Redis กับ Memcached ควรใช้ตัวไหน" },
+  { "id": "react-memory-leak", "prompt": "แก้ไข memory leak ใน React component ยังไง" },
+  { "id": "event-loop", "prompt": "อธิบายเรื่อง event loop ใน Node.js" },
+  { "id": "docker-compose", "prompt": "ตั้งค่า Docker Compose สำหรับ PostgreSQL + Redis" },
+  { "id": "typescript-why", "prompt": "ทำไมต้องใช้ TypeScript แทน JavaScript" }
+]

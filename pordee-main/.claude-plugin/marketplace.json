@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "pordee",
+  "description": "Terse Thai+English communication mode for Claude Code. ~60-75% fewer output tokens.",
+  "owner": {
+    "name": "Vatunyoo Suwannapisit"
+  },
+  "plugins": [
+    {
+      "name": "pordee",
+      "description": "พอดี — พูดไทยสั้นๆ ตัด token ลง 60-75% โดยไม่เสีย technical accuracy",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}
