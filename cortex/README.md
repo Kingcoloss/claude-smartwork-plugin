@@ -4,7 +4,7 @@
 
 cortex gives Claude Code a brain-shaped working model that **cooperates with** (does not replace) its native features, and offloads cheap background work to an **embedded LLM via ollama** (local or cloud) so expensive Claude tokens go to high-value reasoning.
 
-> **Status:** 🚧 In development (v0.0.1, Sprint 0 — Foundation). See [`../ROADMAP.md`](../ROADMAP.md) for the full plan and progress.
+> **Status:** ✅ All five faculties built, gated, and wired into the lifecycle (Sprints 0–5 complete); Sprint 6 = integration & first publish (v0.1.0). See [`../ROADMAP.md`](../ROADMAP.md) for the full plan and progress.
 
 ## The brain model
 
@@ -60,6 +60,19 @@ Adjust terse output and check savings at any time with `/cortex`:
 | `/cortex status` | show effective state + cumulative token savings |
 
 Changes take effect from the next prompt. Everything is opt-in style guidance — turning cortex off changes nothing native.
+
+## Skills
+
+cortex runs mostly on its own (hooks recall memory each prompt, consolidate at session end, and
+inject thinking discipline). These skills are the **on-demand** half — call them when you want to
+reach for memory or reasoning explicitly:
+
+| Skill | Use it to |
+|---|---|
+| `/cortex-recall` | recall past lessons + knowledge on a topic, or list the whole knowledge catalog (`--index`) |
+| `/cortex-remember` | deliberately save one lesson (a problem + its fix) or one knowledge page |
+| `/cortex-think` | reason through a hard problem with the thinking disciplines + นิวรณ์5 watch-list + any relevant memory, focused on that problem |
+| `/cortex` | control the terse-output mode and view token savings (see **Controls** above) |
 
 ## Memory tools (MCP)
 
