@@ -10,3 +10,13 @@ cortex/bun.lock
 **/*.cortex.db
 **/*.cortex.db-*
 .cortex-cache/
+
+# Local-only reference projects (NOT part of the published marketplace).
+# Kept on disk for behavioral study; BUSL/third-party source must never ship here.
+buddhist-method-main/
+caveman-main/
+headroom-main/
+pordee-main/
+rtk-develop/
+graphify-out/
+.code-review-graph/
