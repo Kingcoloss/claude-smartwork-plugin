@@ -2,7 +2,7 @@
 
 > **Plugin name:** `cortex` ✅  ·  **Marketplace:** `claude-smartwork`  ·  **Install:** `/plugin install cortex@claude-smartwork`
 > **Last updated:** 2026-06-15  ·  **License:** BUSL-1.1 (→ Apache-2.0 on 2030-06-15)
-> **Status:** 🔨 Sprints 0–1 done & verified · **Sprint 2 closed** — S2-T1..T4 ✅ (detect→route→compress→cache→replace, 30/30 gate), S2-T5 🔄 (savings computed in-hook; stats store deferred to S3-T6). Live-LLM pass + latency review DONE: with a local 3B model (`qwen2.5:3b` ~33 tok/s) compression is generation-bound and **inert under the 15s sync cap** — safe (no-op), but real wins need a faster/off-path backend (sync cap now config-tunable via `perception.timeoutMs`). → **Sprint 3 (Expression)** next.
+> **Status:** 🔨 Sprints 0–1 done & verified · **Sprint 2 closed** — S2-T1..T4 ✅ (detect→route→compress→cache→replace, 30/30 gate), S2-T5 🔄 (savings computed in-hook; stats store deferred to S3-T6). Live-LLM pass + latency review DONE: with a local 3B model (`qwen2.5:3b` ~33 tok/s) compression is generation-bound and **inert under the 15s sync cap** — safe (no-op), but real wins need a faster/off-path backend (sync cap now config-tunable via `perception.timeoutMs`). · **Sprint 3 (Expression) core built + gated** — EN/TH terse rulesets (lite/full/ultra), lang auto-detect, SessionStart inject + UserPromptSubmit reinforce, auto-clarity off-switch; `scripts/expression-test.ts` 28/28. Pending: S3-T6 control skill + `cortex-stats`, and live-CC injection capture.
 
 A single **always-on** Claude Code plugin whose core mechanism is **lifecycle hooks**. It gives the agent a **human-brain-like** memory + cognition model and cuts tokens via an **embedded LLM (ollama, local or cloud)** — the "subconscious."
 
@@ -150,14 +150,17 @@ Goal: compress what Claude reads before it hits context.
   - **✅ latency review DONE — structural verdict:** synchronous in-hook compression with a local 3B model can't net a win under any sane sync budget (generation throughput × budget is the wall). Shipped the one honest knob: **`perception.timeoutMs` is now config-tunable** (`compress.ts` reads it; default 15000) — lower it to fail fast on slow backends, raise it only with a faster backend. Real value (large outputs) needs **a faster/GPU-backed compression model, or moving compression OFF the synchronous path** (async/background) — logged as the S2 follow-up, not a blocker (cooperate-not-replace = inert is harmless).
   - *Carry-forward:* (c) Grep `rebuild` leaves `numLines` stale after compression (metadata only; Claude reads `content`). (d) **WebFetch** adapter still unmapped — capture its `tool_response` shape the same empirical way before adding. (e) **Async/off-path compression** is the real unlock for large outputs — design in a later sprint.
 
-### M3 / Sprint 3 — Expression (speak-side token optimize)  ⬜
-Goal: terse output, EN+TH, always-on.
-- [ ] ⬜ S3-T1 Reimplement caveman EN ruleset (lite/full/ultra)
-- [ ] ⬜ S3-T2 Reimplement pordee TH ruleset (lite/full)
-- [ ] ⬜ S3-T3 Language auto-detect → choose ruleset
-- [ ] ⬜ S3-T4 SessionStart inject + UserPromptSubmit reinforce + flag file
-- [ ] ⬜ S3-T5 Auto-clarity (drop terse for security/irreversible/multi-step)
-- [ ] ⬜ S3-T6 `cortex` control skill (on/off/level/status) + `cortex-stats`
+### M3 / Sprint 3 — Expression (speak-side token optimize)  🔄
+Goal: terse output, EN+TH, always-on. **Core (T1–T5) built + gated; T6 + live-CC capture pending.**
+All rulesets are ORIGINAL reimplementations of caveman (EN) / pordee (TH) behavior — same outcome, own wording; reference BUSL source never copied.
+- [x] ✅ S3-T1 caveman-style EN ruleset (`lib/expression.ts`, pure) — `lite` (cut filler/hedging, keep articles), `full` (drop articles, fragments, short synonyms, no narration/decoration), `ultra` (abbreviate PROSE words only — never code symbols/fn/API names — causality arrows). Preserve-core: code/paths/URLs/identifiers/errors/commit-keywords verbatim, reply in user's language, never announce the mode.
+- [x] ✅ S3-T2 pordee-style TH ruleset — `lite` (drop ครับ/ค่ะ/นะคะ, hedges อาจจะ/น่าจะ, pleasantries; grammar intact) + `full` (lite + drop redundant particles ที่/ซึ่ง/ว่า, drop การ-/ความ- nominalizers, terse swaps เนื่องจาก→เพราะ …). Keeps EN technical terms. `ultra` folds to `full` (TH ships lite/full).
+- [x] ✅ S3-T3 Language auto-detect — `detectLang()` (Thai Unicode block → `th`, else `en`; mixed EN+TH → th). UserPromptSubmit picks the ruleset per turn; `expression.lang` config (`auto`|`en`|`th`, default auto) can pin it.
+- [x] ✅ S3-T4 Inject + reinforce — `hooks/expression-sessionstart.ts` writes the standing ruleset to **stdout = session context**; `hooks/expression-userpromptsubmit.ts` emits a per-turn anchor via **`hookSpecificOutput.additionalContext`**. Hook output shapes **grounded in caveman's shipping CC hooks** (factual CC API, not copied logic). Runtime mode flag `lib/exprmode.ts` (`.cortex-expression` in config dir; whitelist-validated on read; `off`/`lite`/`full`/`ultra`) lets `/cortex …` override config and persist between hooks. `hooks.json` now wires SessionStart + UserPromptSubmit + PostToolUse.
+  - **✅ live-CC injection capture VERIFIED** (headless `claude -p --settings` probe, unique random markers): the model quoted BOTH injected tokens, proving **SessionStart plain stdout** and **UserPromptSubmit `additionalContext`** reach the model's context in CC 2.1.177. (The probe model *refused* to obey the adversarial "emit token" directive — correct security hygiene; cortex's real ruleset is benign opt-in style guidance, so it won't trip that refusal.)
+- [x] ✅ S3-T5 Auto-clarity — split: the **response-side** drop (security/irreversible/multi-step) is a self-instruction inside every ruleset; the **user-side** `needsClarity()` detects confusion ("ไม่เข้าใจ"/"งง"/"say again") or a pasted destructive command (`rm -rf`, `drop table`, `--force`) in the prompt → UPS stays silent that turn (normal prose).
+  - **Verified (gate):** typecheck clean · `scripts/expression-test.ts` **28/28** — lang detect (3), auto-clarity (4), rulesets per lang+mode (8), override flag round-trip + resolve (5), **both hooks e2e spawned with an isolated `CLAUDE_CONFIG_DIR`** (8: SessionStart auto/fixed-lang stdout, UPS TH/EN reinforcement, auto-clarity silence, `/cortex off` flag write + subsequent silence). Perception gate still 30/30 (no regression).
+- [ ] ⬜ S3-T6 `cortex` control skill (on/off/level/status) + `cortex-stats` — flag plumbing exists (`/cortex off|lite|full|ultra` handled in UPS); the SKILL.md control surface + stats reporting are the remaining build.
 
 ### M4 / Sprint 4 — Memory (long-term, human-brain, in-process)  ⬜  ★ core
 Goal: persistent episodic + semantic + Core Memory with recall & consolidation — in-process lib called by hooks.
