@@ -24,6 +24,7 @@ import { getConfig } from './config.ts';
 import { chat, type ChatMessage } from './ollama.ts';
 import { escalate, escalationAvailable } from './escalate.ts';
 import { commitCore, commitWiki, type MemoryHandle } from './memory.ts';
+import { lessonRubric } from './cognition.ts';
 import { debug } from './log.ts';
 
 export interface Lesson { dukkha: string; samudaya?: string; nirodha?: string; magga?: string; }
@@ -93,6 +94,8 @@ export function buildPrompt(digest: string): ChatMessage[] {
     '- lessons: a problem/mistake hit and how it was (or should be) resolved.\n' +
     '- pages: a reusable concept or piece of knowledge worth keeping.\n' +
     '- handoff: <=120 words telling the NEXT session what to pick up.\n' +
+    'When extracting a lesson, apply this efficient-learning rubric so it stays DURABLE:\n' +
+    lessonRubric() + '\n' +
     'Empty arrays are fine. Respond with ONLY a JSON object — no prose, no code fence:\n' +
     '{"lessons":[{"dukkha":"problem","samudaya":"root cause","nirodha":"resolved state","magga":"the fix"}],' +
     '"pages":[{"title":"concept","body":"the knowledge","tags":"comma,list"}],"handoff":"text"}';

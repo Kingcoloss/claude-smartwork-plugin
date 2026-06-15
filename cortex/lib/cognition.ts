@@ -108,3 +108,26 @@ export async function metacognitionFlag(
   }
   return lines.join('\n');
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Efficient-Learning layer (S5-T3) — the Cognition faculty's contribution to how
+// Memory consolidates. The SessionEnd distiller (lib/consolidate.ts) extracts lessons
+// from a transcript; this rubric tells it HOW to make those lessons DURABLE — apply the
+// same disciplines that prime live thinking to the act of learning from the session:
+// Yoniso (root, not symptom), Pahāna (a repeatable fix, not a one-off), Majjhimā (keep
+// only what is worth re-reading). Domain-agnostic — a good lesson is general, whatever
+// the task. The samudaya/magga tags align with the อริยสัจ4 Lesson shape it feeds.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** The efficient-learning rubric: what turns a session incident into a durable, reusable lesson. */
+export const LESSON_RUBRIC: string[] = [
+  'Generalize: state each lesson so it transfers to a DIFFERENT future situation, not a replay of this one.',
+  'Root, not symptom: the cause (samudaya) must name the underlying reason, not the surface event.',
+  'Repeatable fix: the fix (magga) must read as a rule you could follow next time, not a one-off action.',
+  'Right-size: keep only what is worth re-reading later — drop the trivial and the self-evident.',
+];
+
+/** Render the rubric as guidance for the consolidation distiller (S5-T3). */
+export function lessonRubric(): string {
+  return LESSON_RUBRIC.map((r) => `- ${r}`).join('\n');
+}
