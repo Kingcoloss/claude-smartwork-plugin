@@ -131,3 +131,55 @@ export const LESSON_RUBRIC: string[] = [
 export function lessonRubric(): string {
   return LESSON_RUBRIC.map((r) => `- ${r}`).join('\n');
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Coding discipline (S5-T6) — karpathy-guidelines, folded in but GATED to coding.
+// cortex is domain-agnostic: these coding-specific imperatives must NEVER fire on
+// writing / research / planning / trading work. isCodingContext() is the gate; the
+// UserPromptSubmit hook injects codingDisciplineBlock() ONLY when it returns true.
+// Unlike the eight disciplines above, this block DELIBERATELY carries coding vocabulary —
+// that is the point — so it lives apart from the domain-agnostic cognitionPrimer().
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** karpathy-guidelines, reimplemented as terse coding imperatives (the four pillars). */
+export const CODING_DISCIPLINES: { name: string; line: string }[] = [
+  { name: 'Think before coding', line: 'state assumptions explicitly; if multiple readings exist, surface them — don\'t pick silently.' },
+  { name: 'Simplicity first', line: 'write the minimum code that solves it — no speculative abstractions, flags, or error paths.' },
+  { name: 'Surgical changes', line: 'touch only what the task needs; match the surrounding style; don\'t refactor what isn\'t broken.' },
+  { name: 'Goal-driven', line: 'define a verifiable success check first, then loop until it passes.' },
+];
+
+const CODING_HEADER = '⟦cortex coding discipline (karpathy; this task looks like code — informs your judgment, does not override it)⟧';
+
+/** Render the coding-discipline block. Injected ONLY in a coding context (see isCodingContext). */
+export function codingDisciplineBlock(): string {
+  return [CODING_HEADER, ...CODING_DISCIPLINES.map((d) => `- ${d.name}: ${d.line}`)].join('\n') + '\n';
+}
+
+/**
+ * High-precision coding-context detector — the GATE that keeps a coding-only discipline off
+ * domain-agnostic work. Deliberately PRECISION-over-recall: a missed borderline coding prompt
+ * is harmless (the eight domain-agnostic disciplines still apply), but a FALSE POSITIVE would
+ * inject coding discipline onto writing / research / trading work and violate cortex's core
+ * promise. So we match only signals that rarely appear outside code — ambiguous words that also
+ * live in finance/prose ("function", "variable", "import", "position", "exception", "await")
+ * are deliberately EXCLUDED. Structural patterns (a `name.ext` source path, a ``` fence, a
+ * `git`/`npm`/`bun`/`cargo`/`pip` command) are the strongest tells.
+ */
+const CODE_PATTERN =
+  /(```|\b\w[\w./-]*\.(?:ts|tsx|js|jsx|mjs|cjs|py|rs|go|java|rb|c|cc|cpp|h|hpp|cs|php|swift|kt|scala|sql|sh|bash|zsh|ya?ml|toml|gradle|json)\b|\b(?:git|npm|pnpm|yarn|bun|pip|cargo|gradle|make|docker|kubectl)\s+\w)/i;
+const CODING_SIGNALS = [
+  'refactor', 'debug', 'codebase', 'compile', 'compiler', 'syntax error', 'runtime error',
+  'stack trace', 'stacktrace', 'segfault', 'null pointer', 'regex', 'eslint', 'linter',
+  'merge conflict', 'pull request', 'rebase', 'webpack', 'typescript', 'javascript', 'golang',
+  'sql query', 'api endpoint', 'recursion', 'source code', 'code review', 'unit test',
+  'integration test', 'test suite', 'bug in', 'stack overflow',
+];
+
+export function isCodingContext(text: string): boolean {
+  const raw = text ?? '';
+  if (!raw.trim()) return false;
+  if (CODE_PATTERN.test(raw)) return true;
+  const t = raw.toLowerCase();
+  return CODING_SIGNALS.some((s) => t.includes(s));
+}

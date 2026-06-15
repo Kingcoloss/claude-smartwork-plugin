@@ -1,19 +1,18 @@
 #!/usr/bin/env bun
 /**
- * UserPromptSubmit hook for the Cognition faculty (Sprint 5 / S5-T4) — the metacognition red-flag.
+ * UserPromptSubmit hook for the Cognition faculty — the per-prompt context layer. Assembles up
+ * to three pieces and injects them via `hookSpecificOutput.additionalContext`:
+ *   1. coding discipline (S5-T6) — karpathy guidelines, ONLY when isCodingContext(prompt) is true
+ *      (cortex is domain-agnostic; this must not fire on writing/research/trading). Memory-free.
+ *   2. metacognition red-flag (S5-T2/T4) — if the prompt recalls a CHRONIC Core Memory lesson
+ *      (hits ≥ threshold), the อุทธัจจกุกกุจจะ "don't loop the same fix" warning. Needs memory.
  *
- * The prompt IS the context: run it through metacognitionFlag (S5-T2), which recalls Core Memory
- * and, if a lesson is already CHRONIC (hits ≥ threshold), injects the อุทธัจจกุกกุจจะ "don't loop
- * the same fix" warning via `hookSpecificOutput.additionalContext`. This is the per-prompt half of
- * Cognition (the SessionStart hook injects the standing discipline); it stays token-cheap because it
- * emits nothing unless a real recurrence is detected.
- *
- * Cooperate-not-replace: cognition/memory off, a `/cortex` control prompt, an empty prompt, or
- * nothing chronic → silent no-op.
+ * Token-cheap: emits nothing unless one of these actually triggers. Cooperate-not-replace:
+ * cognition off, a `/cortex` control prompt, or an empty prompt → silent no-op.
  */
 import { getConfig } from '../lib/config.ts';
 import { openMemory, closeMemory } from '../lib/memory.ts';
-import { metacognitionFlag } from '../lib/cognition.ts';
+import { metacognitionFlag, isCodingContext, codingDisciplineBlock } from '../lib/cognition.ts';
 import { debug } from '../lib/log.ts';
 
 async function main(): Promise<void> {
@@ -30,19 +29,28 @@ async function main(): Promise<void> {
   const cfg = getConfig();
   if (!cfg.enabled || !cfg.cognition.enabled) return;
 
+  const parts: string[] = [];
+
+  // 1. Coding discipline (memory-free, gated to code-shaped prompts).
+  if (isCodingContext(prompt)) parts.push(codingDisciplineBlock().trimEnd());
+
+  // 2. Metacognition red-flag (needs the memory store).
   const h = openMemory({ cfg });
-  if (!h) return; // memory off / no sqlite → nothing to recall against
-  try {
-    const flag = await metacognitionFlag(h, prompt);
-    if (!flag) return;
-    process.stdout.write(
-      JSON.stringify({
-        hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: flag },
-      }),
-    );
-  } finally {
-    closeMemory(h);
+  if (h) {
+    try {
+      const flag = await metacognitionFlag(h, prompt);
+      if (flag) parts.push(flag);
+    } finally {
+      closeMemory(h);
+    }
   }
+
+  if (parts.length === 0) return;
+  process.stdout.write(
+    JSON.stringify({
+      hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: parts.join('\n\n') },
+    }),
+  );
 }
 
 main().catch((err) => debug('cognition', 'userpromptsubmit', (err as Error)?.message));
