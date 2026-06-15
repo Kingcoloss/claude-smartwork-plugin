@@ -14,5 +14,10 @@
   "devDependencies": {
     "@types/bun": "^1.2.0",
     "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.2",
+    "sqlite-vec": "^0.1.9",
+    "ulidx": "^2.4.1"
   }
 }

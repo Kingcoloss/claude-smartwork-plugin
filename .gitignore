@@ -9,6 +9,8 @@ cortex/node_modules/
 cortex/bun.lock
 **/*.cortex.db
 **/*.cortex.db-*
+**/cortex.db
+**/cortex.db-*
 .cortex-cache/
 
 # Local-only reference projects (NOT part of the published marketplace).
