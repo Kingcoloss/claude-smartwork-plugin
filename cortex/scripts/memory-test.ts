@@ -21,7 +21,7 @@ function ok(cond: boolean, label: string, detail = ''): void {
 
 // Isolate config BEFORE importing (getConfig caches; configDir() reads the env).
 process.env.CLAUDE_CONFIG_DIR = mkdtempSync(join(tmpdir(), 'cortex-mem-cfg-'));
-const { openMemory, closeMemory, commit, recall, fuse, commitCore, recallCore, signatureOf } =
+const { openMemory, closeMemory, commit, recall, fuse, commitCore, recallCore, signatureOf, commitWiki, recallWiki, link, neighbors } =
   await import('../lib/memory.ts');
 
 /** Deterministic 16-d embedding: identical text → identical vector (distance 0). */
@@ -130,6 +130,59 @@ const cf = await recallCore(hcf, 'ECONNREFUSED postgres');
 ok(cf.some((r) => r.magga === 'wait for db health'), 'core recall works FTS-only');
 ok(cf.every((r) => r.sources.length === 1 && r.sources[0] === 'fts'), 'FTS-only core hits carry only the fts source');
 closeMemory(hcf);
+
+// ── 8. LLM-Wiki — distilled concept pages (upsert by title) ──────────────────
+const hw = openMemory({ dir: memDir(), embed: fakeEmbed })!;
+const w1 = await commitWiki(hw, { title: 'RRF Fusion', body: 'reciprocal rank fusion merges ranked lists', tags: 'recall,ranking' });
+ok(w1 !== null && w1!.updated === false, 'first wiki page is an insert');
+const w2 = await commitWiki(hw, { title: 'rrf fusion', body: 'merge fts and vec lists by rank with K=60' });
+ok(w2 !== null && w2!.updated === true && w2!.id === w1!.id, 'same title (diff case) upserts the same page');
+
+const wiki = await recallWiki(hw, 'reciprocal rank fusion');
+ok(wiki.length >= 1 && wiki[0].id === w1!.id, 'recallWiki surfaces the page');
+ok(wiki[0].body.includes('K=60'), 'upsert refreshed the body', wiki[0]?.body);
+ok(wiki[0].sources.includes('fts') && wiki[0].sources.includes('vec'), 'wiki recall is hybrid (fts+vec)');
+ok((await commitWiki(hw, { title: 'x', body: '   ' })) === null, 'empty body is rejected');
+ok((await commitWiki(hw, { title: '  ', body: 'y' })) === null, 'empty title is rejected');
+ok((await recallWiki(hw, '')).length === 0, 'empty wiki query returns no hits');
+closeMemory(hw);
+
+// LLM-Wiki FTS-only fallback
+const hwf = openMemory({ dir: memDir(), embed: fakeEmbed, enableVec: false })!;
+await commitWiki(hwf, { title: 'Graceful Degradation', body: 'cortex never blocks native Claude Code' });
+const wf = await recallWiki(hwf, 'graceful degradation');
+ok(wf.some((r) => r.title === 'Graceful Degradation'), 'wiki recall works FTS-only');
+ok(wf.every((r) => r.sources.length === 1 && r.sources[0] === 'fts'), 'FTS-only wiki hits carry only the fts source');
+closeMemory(hwf);
+
+// ── 9. Cross-reference graph — navigation + augment Core Memory ──────────────
+const hgr = openMemory({ dir: memDir(), embed: fakeEmbed })!;
+const pB = (await commitWiki(hgr, { title: 'Hybrid Recall', body: 'fts union vec' }))!;
+const pA = (await commitWiki(hgr, { title: 'RRF Fusion', body: 'fuses lists; see [[Hybrid Recall]] for the union' }))!;
+
+let nA = neighbors(hgr, 'semantic', pA.id);
+ok(nA.some((n) => n.dir === 'out' && n.id === pB.id && n.relation === 'wiki-link'), '[[link]] creates an out edge to the resolved page');
+ok(nA.find((n) => n.id === pB.id)?.label === 'Hybrid Recall', 'neighbor is hydrated to the page title');
+ok(neighbors(hgr, 'semantic', pB.id).some((n) => n.dir === 'in' && n.id === pA.id), 'backlink: the target sees the incoming edge');
+
+// editing out the [[link]] removes the stale edge
+await commitWiki(hgr, { title: 'RRF Fusion', body: 'fuses ranked lists (no link now)' });
+nA = neighbors(hgr, 'semantic', pA.id);
+ok(!nA.some((n) => n.id === pB.id), 'editing out a [[link]] removes the stale edge');
+
+// Core Memory lesson links to a concept page (augments Core Memory)
+const cm = (await commitCore(hgr, { dukkha: 'picked wrong fusion', magga: 'use [[Hybrid Recall]] instead' }))!;
+ok(neighbors(hgr, 'core', cm.id).some((n) => n.dir === 'out' && n.id === pB.id), 'a Core Memory lesson links out to its concept page');
+ok(neighbors(hgr, 'semantic', pB.id).some((n) => n.kind === 'core' && n.id === cm.id), 'the concept page backlinks to the lesson');
+
+// unresolved [[link]] → no edge, no throw
+const pU = (await commitWiki(hgr, { title: 'Orphan', body: 'refs [[Does Not Exist]]' }))!;
+ok(neighbors(hgr, 'semantic', pU.id).length === 0, 'an unresolved [[link]] creates no edge');
+
+// explicit link() primitive (custom relation, preserved across wiki-link reconcile)
+link(hgr, 'semantic', pA.id, 'semantic', pB.id, 'see-also');
+ok(neighbors(hgr, 'semantic', pA.id).some((n) => n.id === pB.id && n.relation === 'see-also'), 'explicit link() connects two nodes');
+closeMemory(hgr);
 
 console.log('');
 console.log(failed === 0 ? '✅ ALL PASS' : `❌ ${failed} FAILED`);

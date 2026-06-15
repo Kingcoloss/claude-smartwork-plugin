@@ -14,7 +14,7 @@
  */
 import { Database } from 'bun:sqlite';
 import { drizzle, type BunSQLiteDatabase } from 'drizzle-orm/bun-sqlite';
-import { eq, inArray } from 'drizzle-orm';
+import { eq, and, inArray, sql } from 'drizzle-orm';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -22,7 +22,7 @@ import { ulid } from 'ulidx';
 import * as vec from 'sqlite-vec';
 import { getConfig, type CortexConfig } from './config.ts';
 import { embed as ollamaEmbed } from './ollama.ts';
-import { initSchema, initVecTable, findSqliteLib, episodic, coreMemory, SCHEMA_VERSION } from './schema.ts';
+import { initSchema, initVecTable, findSqliteLib, episodic, coreMemory, semantic, links, SCHEMA_VERSION } from './schema.ts';
 import { debug } from './log.ts';
 
 /** Embed one text → one vector (or null). Wraps ollama; overridable in tests. */
@@ -342,16 +342,17 @@ function syncCoreFts(
   } catch (e) { debug('memory', 'core fts sync', (e as Error)?.message); }
 }
 
-/** Keep a core row's vec0 mirror in sync by embedding the dukkha. Async, best-effort. */
-async function syncCoreVec(h: MemoryHandle, id: string, dukkha: string): Promise<void> {
+/** Keep an upsert-kind's vec0 mirror in sync by embedding `text` (delete+reinsert).
+ *  Async, best-effort; `table` is an internal constant. Shared by core + semantic. */
+async function syncVec(h: MemoryHandle, table: string, id: string, text: string): Promise<void> {
   if (!h.hasVec) return;
   try {
-    const v = await h.embed(dukkha);
+    const v = await h.embed(text);
     if (v && v.length > 0 && ensureVec(h, v.length)) {
-      h.db.run('DELETE FROM core_vec WHERE id = ?', [id]);
-      h.db.run('INSERT INTO core_vec(id, embedding) VALUES (?, ?)', [id, new Float32Array(v)]);
+      h.db.run(`DELETE FROM ${table} WHERE id = ?`, [id]);
+      h.db.run(`INSERT INTO ${table}(id, embedding) VALUES (?, ?)`, [id, new Float32Array(v)]);
     }
-  } catch (e) { debug('memory', 'core vec sync', (e as Error)?.message); }
+  } catch (e) { debug('memory', `${table} vec sync`, (e as Error)?.message); }
 }
 
 /**
@@ -372,6 +373,7 @@ export async function commitCore(
   let id: string;
   let deduped: boolean;
   let ftsDukkha: string;
+  let linkText = ''; // cause/fix prose — parsed for [[wiki-links]] to connect the lesson to knowledge
   try {
     const existing = h.orm
       .select({
@@ -391,6 +393,7 @@ export async function commitCore(
         .where(eq(coreMemory.id, existing.id)).run();
       id = existing.id; deduped = true; ftsDukkha = existing.dukkha;
       syncCoreFts(h, id, ftsDukkha, merged);
+      linkText = [merged.samudaya, merged.nirodha, merged.magga].filter(Boolean).join('\n');
     } else {
       id = ulid(); deduped = false; ftsDukkha = entry.dukkha;
       const fields = {
@@ -400,13 +403,15 @@ export async function commitCore(
         id, signature: sig, dukkha: entry.dukkha, ...fields, hits: 1, createdAt: now, updatedAt: now,
       }).run();
       syncCoreFts(h, id, ftsDukkha, fields);
+      linkText = [fields.samudaya, fields.nirodha, fields.magga].filter(Boolean).join('\n');
     }
   } catch (e) {
     debug('memory', 'commitCore', (e as Error)?.message);
     return null;
   }
 
-  await syncCoreVec(h, id, ftsDukkha); // best-effort enrichment, outside the row write
+  setWikiLinks(h, 'core', id, linkText);       // lesson → concept-page edges (augments Core Memory)
+  await syncVec(h, 'core_vec', id, ftsDukkha); // best-effort enrichment, outside the row write
   return { id, deduped };
 }
 
@@ -438,4 +443,203 @@ export async function recallCore(
       return row ? { ...row, score: r.score, sources: r.sources } : null;
     })
     .filter((x): x is CoreHit => x !== null);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LLM-Wiki — semantic distilled-concept pages (S4-T4, Karpathy's LLM-Wiki concept)
+// Domain-agnostic: a "page" is any distilled, reusable concept — a definition, a lesson,
+// a pattern, a how-to — keyed by title (one page per concept, upserted/kept-current). The
+// body is markdown and may carry [[wiki-links]] that become navigation edges (see graph
+// section below). This is the STORE; distillation that GENERATES pages = consolidation (S4-T6).
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface WikiEntry {
+  title: string;   // the concept name (the dedup key — one page per title)
+  body: string;    // the distilled content
+  tags?: string;   // optional comma list
+}
+
+export interface WikiHit {
+  id: string;
+  title: string;
+  body: string;
+  tags: string | null;
+  score: number;
+  sources: string[];
+}
+
+/** Keep a wiki page's FTS5 mirror in sync (delete+reinsert). Sync, best-effort. */
+function syncSemanticFts(h: MemoryHandle, id: string, title: string, body: string, tags: string | null): void {
+  try {
+    h.db.run('DELETE FROM semantic_fts WHERE id = ?', [id]);
+    h.db.run('INSERT INTO semantic_fts(id, title, body, tags) VALUES (?, ?, ?, ?)', [id, title, body, tags ?? '']);
+  } catch (e) { debug('memory', 'semantic fts sync', (e as Error)?.message); }
+}
+
+/**
+ * Upsert a distilled concept page, keyed by title (case-insensitive): an existing page
+ * with the same title has its body/tags refreshed (the wiki model — one page per concept,
+ * edited over time) rather than duplicated; the stored title keeps its first-seen casing so
+ * the search mirrors stay consistent. Returns the id + whether it updated an existing page,
+ * or null if title/body is empty or the row write failed.
+ */
+export async function commitWiki(
+  h: MemoryHandle,
+  entry: WikiEntry,
+): Promise<{ id: string; updated: boolean } | null> {
+  if (!entry?.title?.trim() || !entry?.body?.trim()) return null;
+  const now = Date.now();
+  const tags = entry.tags?.trim() || null;
+
+  let id: string;
+  let updated: boolean;
+  let title: string;
+  try {
+    const existing = h.orm.select({ id: semantic.id, title: semantic.title }).from(semantic)
+      .where(sql`lower(${semantic.title}) = lower(${entry.title})`).get();
+    if (existing) {
+      h.orm.update(semantic).set({ body: entry.body, tags, updatedAt: now }).where(eq(semantic.id, existing.id)).run();
+      id = existing.id; updated = true; title = existing.title;
+    } else {
+      id = ulid(); updated = false; title = entry.title;
+      h.orm.insert(semantic).values({ id, title, body: entry.body, tags, createdAt: now, updatedAt: now }).run();
+    }
+    syncSemanticFts(h, id, title, entry.body, tags);
+  } catch (e) {
+    debug('memory', 'commitWiki', (e as Error)?.message);
+    return null;
+  }
+
+  setWikiLinks(h, 'semantic', id, entry.body);                    // [[wiki-links]] → edges
+  await syncVec(h, 'semantic_vec', id, `${title}\n${entry.body}`); // embed title+body for semantic match
+  return { id, updated };
+}
+
+/** Hybrid recall over LLM-Wiki pages — the distilled concept relevant to a query. */
+export async function recallWiki(
+  h: MemoryHandle,
+  query: string,
+  opts: { limit?: number } = {},
+): Promise<WikiHit[]> {
+  if (!query?.trim()) return [];
+  const ranked = await hybridSearch(h, query, 'semantic_fts', 'semantic_vec', opts.limit ?? 5);
+  if (ranked.length === 0) return [];
+
+  const rows = h.orm
+    .select({ id: semantic.id, title: semantic.title, body: semantic.body, tags: semantic.tags })
+    .from(semantic)
+    .where(inArray(semantic.id, ranked.map((r) => r.id)))
+    .all();
+  const byId = new Map(rows.map((r) => [r.id, r]));
+  return ranked
+    .map((r) => {
+      const row = byId.get(r.id);
+      return row ? { ...row, score: r.score, sources: r.sources } : null;
+    })
+    .filter((x): x is WikiHit => x !== null);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Cross-reference graph — navigation across memory kinds (S4-T4)
+// [[wiki-links]] in a page body (or a Core Memory's cause/fix) become directed edges,
+// so a lesson connects to the knowledge that explains it, and either can be navigated.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface Neighbor {
+  kind: string;        // 'semantic' | 'core' | 'episodic'
+  id: string;
+  label: string;       // page title / lesson dukkha / event snippet
+  relation: string | null;
+  dir: 'out' | 'in';   // out = this node links to it; in = it links to this node
+}
+
+/** Pull distinct [[Wiki Link]] targets out of free text. */
+function parseWikiLinks(text: string): string[] {
+  const out: string[] = [];
+  const re = /\[\[([^[\]]+)\]\]/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text ?? '')) !== null) {
+    const t = m[1].trim();
+    if (t) out.push(t);
+  }
+  return [...new Set(out)];
+}
+
+/** Create or replace one directed edge between memory items. Best-effort. */
+export function link(
+  h: MemoryHandle,
+  srcKind: string, srcId: string,
+  dstKind: string, dstId: string,
+  relation: string | null = null,
+): void {
+  try {
+    h.orm.insert(links).values({ srcKind, srcId, dstKind, dstId, relation })
+      .onConflictDoUpdate({
+        target: [links.srcKind, links.srcId, links.dstKind, links.dstId],
+        set: { relation },
+      }).run();
+  } catch (e) { debug('memory', 'link', (e as Error)?.message); }
+}
+
+/**
+ * Reconcile a source's auto 'wiki-link' edges from the [[links]] in `text`: clear its
+ * prior wiki-links (so edits don't leave stale ones), then add an edge to each [[Title]]
+ * that resolves to an existing semantic page. Unresolved links are dropped (a known
+ * "missing cross-reference" — lint territory). Explicit link() edges are left untouched.
+ */
+function setWikiLinks(h: MemoryHandle, srcKind: string, srcId: string, text: string): void {
+  try {
+    h.orm.delete(links)
+      .where(and(eq(links.srcKind, srcKind), eq(links.srcId, srcId), eq(links.relation, 'wiki-link')))
+      .run();
+    for (const title of parseWikiLinks(text)) {
+      const page = h.orm.select({ id: semantic.id }).from(semantic)
+        .where(sql`lower(${semantic.title}) = lower(${title})`).get();
+      if (page && !(srcKind === 'semantic' && page.id === srcId)) { // skip self-links
+        link(h, srcKind, srcId, 'semantic', page.id, 'wiki-link');
+      }
+    }
+  } catch (e) { debug('memory', 'setWikiLinks', (e as Error)?.message); }
+}
+
+const snippet = (s: string): string => (s.length > 80 ? s.slice(0, 80) + '…' : s);
+
+/** Human-readable label for a node (page title / lesson / event), or the id as fallback. */
+function labelOf(h: MemoryHandle, kind: string, id: string): string {
+  try {
+    if (kind === 'semantic') {
+      const r = h.orm.select({ t: semantic.title }).from(semantic).where(eq(semantic.id, id)).get();
+      return r?.t ?? id;
+    }
+    if (kind === 'core') {
+      const r = h.orm.select({ t: coreMemory.dukkha }).from(coreMemory).where(eq(coreMemory.id, id)).get();
+      return r ? snippet(r.t) : id;
+    }
+    if (kind === 'episodic') {
+      const r = h.orm.select({ t: episodic.content }).from(episodic).where(eq(episodic.id, id)).get();
+      return r ? snippet(r.t) : id;
+    }
+    return id;
+  } catch { return id; }
+}
+
+/**
+ * Navigate the graph around one node: everything it links to (out) and everything that
+ * links to it (in), hydrated to readable labels. The basis for "see the connections of a
+ * memory" — e.g. neighbors('core', lessonId) surfaces the concept pages behind a lesson.
+ */
+export function neighbors(h: MemoryHandle, kind: string, id: string): Neighbor[] {
+  try {
+    const out = h.orm.select({ kind: links.dstKind, id: links.dstId, relation: links.relation })
+      .from(links).where(and(eq(links.srcKind, kind), eq(links.srcId, id))).all();
+    const inc = h.orm.select({ kind: links.srcKind, id: links.srcId, relation: links.relation })
+      .from(links).where(and(eq(links.dstKind, kind), eq(links.dstId, id))).all();
+    return [
+      ...out.map((e) => ({ kind: e.kind, id: e.id, label: labelOf(h, e.kind, e.id), relation: e.relation, dir: 'out' as const })),
+      ...inc.map((e) => ({ kind: e.kind, id: e.id, label: labelOf(h, e.kind, e.id), relation: e.relation, dir: 'in' as const })),
+    ];
+  } catch (e) {
+    debug('memory', 'neighbors', (e as Error)?.message);
+    return [];
+  }
 }

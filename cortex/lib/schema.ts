@@ -1,10 +1,11 @@
 /**
  * Memory schema — the long-term store's data model (Sprint 4 / S4-T1).
  *
- * Three human-brain memory kinds on one bun:sqlite file:
+ * Three human-brain memory kinds on one bun:sqlite file, plus a cross-reference graph:
  *   • episodic    — session events (what happened, when)
- *   • semantic    — LLM-Wiki: distilled, reusable concepts          (writers: S4-T4)
- *   • core_memory — อริยสัจ4 error→cause→fix→path, anti-repeat ledger (writers: S4-T3)
+ *   • semantic    — LLM-Wiki: distilled concept pages (markdown body, [[wiki-links]])
+ *   • core_memory — อริยสัจ4 error→cause→fix→path, anti-repeat ledger
+ *   • links       — directed edges across kinds (navigation; connects lessons↔knowledge)
  *
  * Storage layering (D4/D10): regular tables are typed via drizzle-orm; the SEARCH
  * surfaces — FTS5 (keyword) and vec0 (semantic KNN) — are SQLite *virtual* tables
@@ -17,9 +18,9 @@
  * created until the first real embedding reveals the width; lib/memory.ts learns it
  * then, persists it in `meta`, and creates the vec table.
  *
- * Foundation scope: all 3 regular tables are the declared data model and exist now.
- * episodic (T2) + core_memory (T3) have their FTS5/vec0 surfaces built here; semantic's
- * are created alongside its write path in T4, not before.
+ * All 3 regular tables + their FTS5/vec0 search surfaces exist here: episodic (T2),
+ * core_memory (T3), semantic (T4 = LLM-Wiki). Surfaces were added per task as each
+ * write path landed, not speculatively.
  */
 import { existsSync } from 'node:fs';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
@@ -63,6 +64,18 @@ export const meta = sqliteTable('meta', {
   value: text('value').notNull(),
 });
 
+// Cross-reference graph (S4-T4): directed edges connecting any memory items across
+// kinds — semantic↔core↔episodic — so knowledge can be navigated, and a Core Memory
+// lesson can link to the concept page(s) that explain it. dst_id is the target's id
+// (or, for a semantic page, still its id resolved from a [[wiki-link]] title).
+export const links = sqliteTable('links', {
+  srcKind: text('src_kind').notNull(),   // 'semantic' | 'core' | 'episodic'
+  srcId: text('src_id').notNull(),
+  dstKind: text('dst_kind').notNull(),
+  dstId: text('dst_id').notNull(),
+  relation: text('relation'),            // e.g. 'wiki-link' (auto from [[..]]) or a custom label
+});
+
 // ── libsqlite3 discovery (sqlite-vec needs a full SQLite, not Bun's bundled) ─
 /** Candidate full-featured libsqlite3 paths; env override wins. */
 const SQLITE_LIB_CANDIDATES = [
@@ -97,14 +110,21 @@ export function initSchema(db: Database): void {
     dukkha TEXT NOT NULL, samudaya TEXT, nirodha TEXT, magga TEXT,
     hits INTEGER NOT NULL, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL)`);
   db.run(`CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)`);
+  db.run(`CREATE TABLE IF NOT EXISTS links (
+    src_kind TEXT NOT NULL, src_id TEXT NOT NULL,
+    dst_kind TEXT NOT NULL, dst_id TEXT NOT NULL, relation TEXT,
+    PRIMARY KEY (src_kind, src_id, dst_kind, dst_id))`);
+  db.run(`CREATE INDEX IF NOT EXISTS links_dst ON links(dst_kind, dst_id)`); // backlink lookups
   db.run(`CREATE VIRTUAL TABLE IF NOT EXISTS episodic_fts USING fts5(id UNINDEXED, content)`);
   db.run(`CREATE VIRTUAL TABLE IF NOT EXISTS core_fts USING fts5(id UNINDEXED, dukkha, samudaya, nirodha, magga)`);
+  db.run(`CREATE VIRTUAL TABLE IF NOT EXISTS semantic_fts USING fts5(id UNINDEXED, title, body, tags)`);
 }
 
 /** Create the vec0 tables for a known embedding width. Idempotent; no-op if width invalid.
- *  episodic + core share the width (one embed model → one dims). */
+ *  All kinds share the width (one embed model → one dims). */
 export function initVecTable(db: Database, dims: number): void {
   if (!Number.isInteger(dims) || dims <= 0) return;
   db.run(`CREATE VIRTUAL TABLE IF NOT EXISTS episodic_vec USING vec0(id TEXT PRIMARY KEY, embedding float[${dims}])`);
   db.run(`CREATE VIRTUAL TABLE IF NOT EXISTS core_vec USING vec0(id TEXT PRIMARY KEY, embedding float[${dims}])`);
+  db.run(`CREATE VIRTUAL TABLE IF NOT EXISTS semantic_vec USING vec0(id TEXT PRIMARY KEY, embedding float[${dims}])`);
 }
