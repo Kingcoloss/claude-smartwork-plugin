@@ -14,14 +14,15 @@
  */
 import { Database } from 'bun:sqlite';
 import { drizzle, type BunSQLiteDatabase } from 'drizzle-orm/bun-sqlite';
-import { inArray } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
+import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { ulid } from 'ulidx';
 import * as vec from 'sqlite-vec';
 import { getConfig, type CortexConfig } from './config.ts';
 import { embed as ollamaEmbed } from './ollama.ts';
-import { initSchema, initVecTable, findSqliteLib, episodic, SCHEMA_VERSION } from './schema.ts';
+import { initSchema, initVecTable, findSqliteLib, episodic, coreMemory, SCHEMA_VERSION } from './schema.ts';
 import { debug } from './log.ts';
 
 /** Embed one text → one vector (or null). Wraps ollama; overridable in tests. */
@@ -112,6 +113,22 @@ export function closeMemory(h: MemoryHandle | null): void {
 }
 
 /**
+ * Learn the model-bound embedding width on first sight — persist it in `meta` and
+ * create the vec tables. Returns true when `len` matches the established width, i.e.
+ * the caller may insert this vector (a mismatch means the embed model changed →
+ * skip vec, keep FTS). Shared by episodic commit() and Core Memory commitCore().
+ */
+function ensureVec(h: MemoryHandle, len: number): boolean {
+  if (h.dims === 0) {
+    h.dims = len;
+    try { h.db.run('INSERT OR REPLACE INTO meta(key, value) VALUES (?, ?)', ['embed_dims', String(len)]); } catch {}
+    initVecTable(h.db, len);
+  }
+  if (len !== h.dims) debug('memory', 'dims mismatch', len, 'expected', h.dims);
+  return len === h.dims;
+}
+
+/**
  * Write one episodic event. The row + FTS mirror are committed first (cheap, always);
  * the embedding/vector is a best-effort enrichment that never blocks the write.
  * Returns the new id, or null if even the row write failed.
@@ -137,17 +154,8 @@ export async function commit(h: MemoryHandle, entry: CommitEntry): Promise<strin
   if (h.hasVec) {
     try {
       const v = await h.embed(entry.content);
-      if (v && v.length > 0) {
-        if (h.dims === 0) {        // first embedding reveals the model-bound width
-          h.dims = v.length;
-          h.db.run('INSERT OR REPLACE INTO meta(key, value) VALUES (?, ?)', ['embed_dims', String(h.dims)]);
-          initVecTable(h.db, h.dims);
-        }
-        if (v.length === h.dims) {
-          h.db.run('INSERT INTO episodic_vec(id, embedding) VALUES (?, ?)', [id, new Float32Array(v)]);
-        } else {
-          debug('memory', 'dims mismatch', v.length, 'expected', h.dims); // model changed → skip vec, keep FTS
-        }
+      if (v && v.length > 0 && ensureVec(h, v.length)) {
+        h.db.run('INSERT INTO episodic_vec(id, embedding) VALUES (?, ?)', [id, new Float32Array(v)]);
       }
     } catch (e) { debug('memory', 'commit vec', (e as Error)?.message); }
   }
@@ -163,17 +171,18 @@ function toMatch(query: string): string | null {
 }
 
 /**
- * Hybrid recall: keyword (FTS5) ∪ semantic (vec0 KNN), fused by rank. Each retriever
- * degrades independently — no FTS terms, or no vec/ollama, just narrows the pool.
- * Returns at most `limit` hits, best first.
+ * Hybrid retrieval over one FTS5/vec0 pair: keyword (bm25) ∪ semantic (vec KNN), fused
+ * by rank. Each retriever degrades independently — no FTS terms, or no vec/ollama, just
+ * narrows the pool. Returns ranked {id, score, sources}; hydration is the caller's job
+ * (table-typed). Table names are internal constants, never user input.
  */
-export async function recall(
+async function hybridSearch(
   h: MemoryHandle,
   query: string,
-  opts: { limit?: number } = {},
-): Promise<RecallHit[]> {
-  if (!query?.trim()) return [];
-  const limit = opts.limit ?? 5;
+  ftsTable: string,
+  vecTable: string,
+  limit: number,
+): Promise<{ id: string; score: number; sources: string[] }[]> {
   const pool = Math.max(limit * 4, 20); // retrieve wide, fuse, then trim
 
   let ftsIds: string[] = [];
@@ -181,9 +190,9 @@ export async function recall(
   if (match) {
     try {
       ftsIds = (h.db.query(
-        `SELECT id FROM episodic_fts WHERE episodic_fts MATCH ? ORDER BY bm25(episodic_fts) LIMIT ?`,
+        `SELECT id FROM ${ftsTable} WHERE ${ftsTable} MATCH ? ORDER BY bm25(${ftsTable}) LIMIT ?`,
       ).all(match, pool) as { id: string }[]).map((r) => r.id);
-    } catch (e) { debug('memory', 'fts', (e as Error)?.message); }
+    } catch (e) { debug('memory', ftsTable, (e as Error)?.message); }
   }
 
   let vecIds: string[] = [];
@@ -192,13 +201,25 @@ export async function recall(
       const v = await h.embed(query);
       if (v && v.length === h.dims) {
         vecIds = (h.db.query(
-          `SELECT id FROM episodic_vec WHERE embedding MATCH ? ORDER BY distance LIMIT ?`,
+          `SELECT id FROM ${vecTable} WHERE embedding MATCH ? ORDER BY distance LIMIT ?`,
         ).all(new Float32Array(v), pool) as { id: string }[]).map((r) => r.id);
       }
-    } catch (e) { debug('memory', 'vec', (e as Error)?.message); }
+    } catch (e) { debug('memory', vecTable, (e as Error)?.message); }
   }
 
-  const ranked = fuse(ftsIds, vecIds, limit);
+  return fuse(ftsIds, vecIds, limit);
+}
+
+/**
+ * Hybrid recall of episodic events. Returns at most `limit` hits, best first.
+ */
+export async function recall(
+  h: MemoryHandle,
+  query: string,
+  opts: { limit?: number } = {},
+): Promise<RecallHit[]> {
+  if (!query?.trim()) return [];
+  const ranked = await hybridSearch(h, query, 'episodic_fts', 'episodic_vec', opts.limit ?? 5);
   if (ranked.length === 0) return [];
 
   const rows = h.orm
@@ -252,4 +273,169 @@ export function fuse(
     .map(([id, v]) => ({ id, score: v.score, sources: [...v.sources] }))
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Core Memory — อริยสัจ4 anti-repeat ledger (S4-T3)
+// ทุกข์(dukkha=error) → สมุทัย(samudaya=cause) → นิโรธ(nirodha=resolved) → มรรค(magga=fix path).
+// Two retrieval needs, kept separate by design (per the fusion analysis):
+//   • dedup-on-write  = EXACT signature match + a `hits` counter (the anti-repeat signal)
+//   • recall-on-read  = hybrid FTS ∪ vec via the same RRF fuse() episodic recall uses
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface CoreEntry {
+  dukkha: string;    // the error/problem (required — the dedup key)
+  samudaya?: string; // root cause
+  nirodha?: string;  // the resolved state
+  magga?: string;    // the fix path
+}
+
+export interface CoreHit {
+  id: string;
+  dukkha: string;
+  samudaya: string | null;
+  nirodha: string | null;
+  magga: string | null;
+  hits: number;      // times this error recurred (higher = more chronic)
+  score: number;
+  sources: string[];
+}
+
+/**
+ * Stable dedup signature for an error. Normalizes away the VOLATILE parts that differ
+ * between two occurrences of the *same* error — UUIDs, hex addresses, timestamps, quoted
+ * literal values, file:line:col positions, bare numbers — then hashes what's left (the
+ * error type + structural message + symbol names). Same error, different run → same sig.
+ *
+ * ── Tunable decision point (anti-repeat precision) ──
+ * Strip MORE → more occurrences collapse into one ledger entry (aggressive dedup, but two
+ * genuinely-different errors can merge). Strip LESS → the same error with a shifted line
+ * number counts as new (anti-repeat misses it). The rules below are the Sentry-style
+ * default; adjust them to tune how cortex decides "this is the same mistake as before."
+ * (Order matters: UUID/timestamp before the bare-number rule, or digits get eaten first.)
+ */
+export function signatureOf(dukkha: string): string {
+  const normalized = (dukkha ?? '')
+    .toLowerCase()
+    .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/g, '<uuid>')
+    .replace(/0x[0-9a-f]+/g, '<addr>')
+    .replace(/\d{4}-\d{2}-\d{2}[t ][\d:.]+z?/g, '<ts>')
+    .replace(/(['"`])[^'"`]*\1/g, '<str>')
+    .replace(/:\d+(?::\d+)?/g, ':<pos>')
+    .replace(/\b\d+\b/g, '<n>')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return createHash('sha256').update(normalized).digest('hex').slice(0, 16);
+}
+
+/** Keep a core row's FTS5 mirror in sync (full delete+reinsert). Sync, best-effort. */
+function syncCoreFts(
+  h: MemoryHandle,
+  id: string,
+  dukkha: string,
+  f: { samudaya: string | null; nirodha: string | null; magga: string | null },
+): void {
+  try {
+    h.db.run('DELETE FROM core_fts WHERE id = ?', [id]);
+    h.db.run('INSERT INTO core_fts(id, dukkha, samudaya, nirodha, magga) VALUES (?, ?, ?, ?, ?)',
+      [id, dukkha, f.samudaya ?? '', f.nirodha ?? '', f.magga ?? '']);
+  } catch (e) { debug('memory', 'core fts sync', (e as Error)?.message); }
+}
+
+/** Keep a core row's vec0 mirror in sync by embedding the dukkha. Async, best-effort. */
+async function syncCoreVec(h: MemoryHandle, id: string, dukkha: string): Promise<void> {
+  if (!h.hasVec) return;
+  try {
+    const v = await h.embed(dukkha);
+    if (v && v.length > 0 && ensureVec(h, v.length)) {
+      h.db.run('DELETE FROM core_vec WHERE id = ?', [id]);
+      h.db.run('INSERT INTO core_vec(id, embedding) VALUES (?, ?)', [id, new Float32Array(v)]);
+    }
+  } catch (e) { debug('memory', 'core vec sync', (e as Error)?.message); }
+}
+
+/**
+ * Record an error→cause→fix lesson with EXACT-signature dedup. A recurrence (same
+ * signature) bumps `hits` and refreshes cause/fix with any newer, non-empty understanding
+ * instead of inserting a duplicate — that growing `hits` IS the anti-repeat signal. The
+ * row's `dukkha` keeps its first-seen text so the search mirrors stay consistent.
+ * Returns the row id + whether it deduped, or null if even the row write failed.
+ */
+export async function commitCore(
+  h: MemoryHandle,
+  entry: CoreEntry,
+): Promise<{ id: string; deduped: boolean } | null> {
+  if (!entry?.dukkha?.trim()) return null;
+  const sig = signatureOf(entry.dukkha);
+  const now = Date.now();
+
+  let id: string;
+  let deduped: boolean;
+  let ftsDukkha: string;
+  try {
+    const existing = h.orm
+      .select({
+        id: coreMemory.id, dukkha: coreMemory.dukkha, samudaya: coreMemory.samudaya,
+        nirodha: coreMemory.nirodha, magga: coreMemory.magga, hits: coreMemory.hits,
+      })
+      .from(coreMemory).where(eq(coreMemory.signature, sig)).get();
+
+    if (existing) {
+      const merged = {
+        samudaya: entry.samudaya?.trim() || existing.samudaya,
+        nirodha: entry.nirodha?.trim() || existing.nirodha,
+        magga: entry.magga?.trim() || existing.magga,
+      };
+      h.orm.update(coreMemory)
+        .set({ ...merged, hits: existing.hits + 1, updatedAt: now })
+        .where(eq(coreMemory.id, existing.id)).run();
+      id = existing.id; deduped = true; ftsDukkha = existing.dukkha;
+      syncCoreFts(h, id, ftsDukkha, merged);
+    } else {
+      id = ulid(); deduped = false; ftsDukkha = entry.dukkha;
+      const fields = {
+        samudaya: entry.samudaya ?? null, nirodha: entry.nirodha ?? null, magga: entry.magga ?? null,
+      };
+      h.orm.insert(coreMemory).values({
+        id, signature: sig, dukkha: entry.dukkha, ...fields, hits: 1, createdAt: now, updatedAt: now,
+      }).run();
+      syncCoreFts(h, id, ftsDukkha, fields);
+    }
+  } catch (e) {
+    debug('memory', 'commitCore', (e as Error)?.message);
+    return null;
+  }
+
+  await syncCoreVec(h, id, ftsDukkha); // best-effort enrichment, outside the row write
+  return { id, deduped };
+}
+
+/**
+ * Hybrid recall over the Core Memory ledger — "have I hit something like this before,
+ * and what fixed it?" Returns the full อริยสัจ4 record + recurrence count, best first.
+ */
+export async function recallCore(
+  h: MemoryHandle,
+  query: string,
+  opts: { limit?: number } = {},
+): Promise<CoreHit[]> {
+  if (!query?.trim()) return [];
+  const ranked = await hybridSearch(h, query, 'core_fts', 'core_vec', opts.limit ?? 5);
+  if (ranked.length === 0) return [];
+
+  const rows = h.orm
+    .select({
+      id: coreMemory.id, dukkha: coreMemory.dukkha, samudaya: coreMemory.samudaya,
+      nirodha: coreMemory.nirodha, magga: coreMemory.magga, hits: coreMemory.hits,
+    })
+    .from(coreMemory)
+    .where(inArray(coreMemory.id, ranked.map((r) => r.id)))
+    .all();
+  const byId = new Map(rows.map((r) => [r.id, r]));
+  return ranked
+    .map((r) => {
+      const row = byId.get(r.id);
+      return row ? { ...row, score: r.score, sources: r.sources } : null;
+    })
+    .filter((x): x is CoreHit => x !== null);
 }

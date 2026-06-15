@@ -17,9 +17,9 @@
  * created until the first real embedding reveals the width; lib/memory.ts learns it
  * then, persists it in `meta`, and creates the vec table.
  *
- * Foundation scope: all 3 regular tables are the declared data model and exist now;
- * episodic's FTS5/vec0 surfaces are built here (T2 exercises them). semantic/core
- * search surfaces are created alongside their write paths in T3/T4, not before.
+ * Foundation scope: all 3 regular tables are the declared data model and exist now.
+ * episodic (T2) + core_memory (T3) have their FTS5/vec0 surfaces built here; semantic's
+ * are created alongside its write path in T4, not before.
  */
 import { existsSync } from 'node:fs';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
@@ -98,10 +98,13 @@ export function initSchema(db: Database): void {
     hits INTEGER NOT NULL, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL)`);
   db.run(`CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)`);
   db.run(`CREATE VIRTUAL TABLE IF NOT EXISTS episodic_fts USING fts5(id UNINDEXED, content)`);
+  db.run(`CREATE VIRTUAL TABLE IF NOT EXISTS core_fts USING fts5(id UNINDEXED, dukkha, samudaya, nirodha, magga)`);
 }
 
-/** Create the episodic vec0 table for a known embedding width. Idempotent; no-op if width invalid. */
+/** Create the vec0 tables for a known embedding width. Idempotent; no-op if width invalid.
+ *  episodic + core share the width (one embed model → one dims). */
 export function initVecTable(db: Database, dims: number): void {
   if (!Number.isInteger(dims) || dims <= 0) return;
   db.run(`CREATE VIRTUAL TABLE IF NOT EXISTS episodic_vec USING vec0(id TEXT PRIMARY KEY, embedding float[${dims}])`);
+  db.run(`CREATE VIRTUAL TABLE IF NOT EXISTS core_vec USING vec0(id TEXT PRIMARY KEY, embedding float[${dims}])`);
 }

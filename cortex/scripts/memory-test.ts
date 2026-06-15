@@ -21,7 +21,8 @@ function ok(cond: boolean, label: string, detail = ''): void {
 
 // Isolate config BEFORE importing (getConfig caches; configDir() reads the env).
 process.env.CLAUDE_CONFIG_DIR = mkdtempSync(join(tmpdir(), 'cortex-mem-cfg-'));
-const { openMemory, closeMemory, commit, recall, fuse } = await import('../lib/memory.ts');
+const { openMemory, closeMemory, commit, recall, fuse, commitCore, recallCore, signatureOf } =
+  await import('../lib/memory.ts');
 
 /** Deterministic 16-d embedding: identical text → identical vector (distance 0). */
 const DIM = 16;
@@ -95,6 +96,40 @@ let threw = false;
 try { await recall(he, 'romeo "OR (sierra* AND'); } catch { threw = true; }
 ok(!threw, 'adversarial FTS syntax is sanitized, never throws');
 closeMemory(he);
+
+// ── 7. Core Memory — signature dedup (อริยสัจ4 anti-repeat) ──────────────────
+ok(signatureOf('TypeError at foo.ts:42') === signatureOf('TypeError at foo.ts:88'),
+  'signature ignores line numbers (same error, diff position)');
+ok(signatureOf('failed 2026-06-15T10:00:00Z') === signatureOf('failed 2026-06-15T23:59:59Z'),
+  'signature ignores timestamps');
+ok(signatureOf('cannot find "alpha"') === signatureOf('cannot find "bravo"'),
+  'signature ignores quoted literal values');
+ok(signatureOf('TypeError: x') !== signatureOf('RangeError: y'),
+  'genuinely different errors get different signatures');
+
+const hc = openMemory({ dir: memDir(), embed: fakeEmbed })!;
+const c1 = await commitCore(hc, { dukkha: 'TypeError: cannot read x at app.ts:10', samudaya: 'null guard missing' });
+ok(c1 !== null && c1!.deduped === false, 'first core entry is not a dedup');
+const c2 = await commitCore(hc, { dukkha: 'TypeError: cannot read x at app.ts:57', magga: 'add optional chaining' });
+ok(c2 !== null && c2!.deduped === true && c2!.id === c1!.id, 'same error (diff line) dedups onto the same row');
+
+const core = await recallCore(hc, 'TypeError cannot read x');
+ok(core.length >= 1 && core[0].id === c1!.id, 'recallCore surfaces the lesson');
+ok(core[0].hits === 2, 'recurrence bumped the hits counter', String(core[0]?.hits));
+ok(core[0].samudaya === 'null guard missing' && core[0].magga === 'add optional chaining',
+  'dedup merged the cause and the later-supplied fix');
+ok(core[0].sources.includes('fts') && core[0].sources.includes('vec'), 'core recall is hybrid (fts+vec)');
+ok((await commitCore(hc, { dukkha: '   ' })) === null, 'empty dukkha is rejected');
+ok((await recallCore(hc, '')).length === 0, 'empty core query returns no hits');
+closeMemory(hc);
+
+// Core Memory FTS-only fallback
+const hcf = openMemory({ dir: memDir(), embed: fakeEmbed, enableVec: false })!;
+await commitCore(hcf, { dukkha: 'ECONNREFUSED postgres on startup', magga: 'wait for db health' });
+const cf = await recallCore(hcf, 'ECONNREFUSED postgres');
+ok(cf.some((r) => r.magga === 'wait for db health'), 'core recall works FTS-only');
+ok(cf.every((r) => r.sources.length === 1 && r.sources[0] === 'fts'), 'FTS-only core hits carry only the fts source');
+closeMemory(hcf);
 
 console.log('');
 console.log(failed === 0 ? '✅ ALL PASS' : `❌ ${failed} FAILED`);
