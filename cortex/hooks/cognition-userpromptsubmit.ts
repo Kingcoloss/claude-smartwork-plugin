@@ -4,7 +4,9 @@
  * to three pieces and injects them via `hookSpecificOutput.additionalContext`:
  *   1. coding discipline (S5-T6) — karpathy guidelines, ONLY when isCodingContext(prompt) is true
  *      (cortex is domain-agnostic; this must not fire on writing/research/trading). Memory-free.
- *   2. metacognition red-flag (S5-T2/T4) — if the prompt recalls a CHRONIC Core Memory lesson
+ *   2. graphify nudge (S5-T7) — prefer KG discovery over Grep, ONLY in a coding context AND when
+ *      graphify is actually available for the project/user. Memory-free.
+ *   3. metacognition red-flag (S5-T2/T4) — if the prompt recalls a CHRONIC Core Memory lesson
  *      (hits ≥ threshold), the อุทธัจจกุกกุจจะ "don't loop the same fix" warning. Needs memory.
  *
  * Token-cheap: emits nothing unless one of these actually triggers. Cooperate-not-replace:
@@ -13,11 +15,12 @@
 import { getConfig } from '../lib/config.ts';
 import { openMemory, closeMemory } from '../lib/memory.ts';
 import { metacognitionFlag, isCodingContext, codingDisciplineBlock } from '../lib/cognition.ts';
+import { graphifyNudge, graphAvailable } from '../lib/graphify.ts';
 import { debug } from '../lib/log.ts';
 
 async function main(): Promise<void> {
   const raw = await Bun.stdin.text();
-  let payload: { prompt?: unknown };
+  let payload: { prompt?: unknown; cwd?: unknown };
   try {
     payload = JSON.parse(raw);
   } catch {
@@ -31,10 +34,14 @@ async function main(): Promise<void> {
 
   const parts: string[] = [];
 
-  // 1. Coding discipline (memory-free, gated to code-shaped prompts).
-  if (isCodingContext(prompt)) parts.push(codingDisciplineBlock().trimEnd());
+  // 1+2. Coding-context layers (memory-free, gated to code-shaped prompts).
+  if (isCodingContext(prompt)) {
+    parts.push(codingDisciplineBlock().trimEnd());
+    const cwd = typeof payload.cwd === 'string' ? payload.cwd : process.cwd();
+    if (graphAvailable(cwd)) parts.push(graphifyNudge());
+  }
 
-  // 2. Metacognition red-flag (needs the memory store).
+  // 3. Metacognition red-flag (needs the memory store).
   const h = openMemory({ cfg });
   if (h) {
     try {
