@@ -1,0 +1,37 @@
+---
+# cortex settings — copy to .claude/cortex.local.md (project) or ~/.claude/cortex.local.md (user).
+# All keys optional; shown values are the defaults. Env vars override these.
+
+enabled: true
+
+# --- Subconscious: embedded LLM (ollama) ---
+# Local default:
+ollama.host: http://localhost:11434
+# Cloud: set host to https://ollama.com and provide a key (or OLLAMA_API_KEY env):
+# ollama.host: https://ollama.com
+# ollama.apiKey: <your-ollama-cloud-key>
+ollama.embedModel: nomic-embed-text
+ollama.compressModel: qwen2.5:3b
+
+# --- Tiered consolidation accuracy: optional Claude escalation ---
+# Runs via the `claude` CLI, so it uses the SAME auth as your Claude Code
+# session (Pro/Max subscription works with no API key). model = any
+# `claude -p --model` value: sonnet | opus | haiku | a full claude-* id.
+escalation.enabled: false
+escalation.model: sonnet
+
+# --- Faculties ---
+perception.enabled: true
+perception.thresholdChars: 4000
+expression.enabled: true
+expression.mode: full        # lite | full | ultra
+memory.enabled: true
+# memory.dir defaults to $CLAUDE_CONFIG_DIR/cortex/memory
+---
+
+# cortex.local.md
+
+This file configures the cortex plugin per-project (or per-user). The frontmatter
+above is the machine-readable settings block; this body is free-form notes.
+
+See the plugin README for the full configuration reference.

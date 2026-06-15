@@ -8,5 +8,12 @@
     "description": "Plugins, skills, and hooks that make Claude Code more token-efficient and improve how it reasons about a task.",
     "version": "0.1.0"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "cortex",
+      "source": "./cortex",
+      "description": "Human-brain-like memory & cognition for Claude Code — always-on, token-efficient, ollama-powered (Bun + Elysia).",
+      "version": "0.0.1"
+    }
+  ]
 }

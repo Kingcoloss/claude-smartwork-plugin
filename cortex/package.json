@@ -1,0 +1,18 @@
+{
+  "name": "cortex-plugin",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "cortex — human-brain-like memory & cognition for Claude Code. Runtime: Bun (TypeScript, no build step).",
+  "engines": {
+    "bun": ">=1.2.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "smoke": "bun run scripts/smoke.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "typescript": "^5.7.2"
+  }
+}

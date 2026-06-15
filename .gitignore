@@ -2,3 +2,11 @@
 
 #Ignore vscode AI rules
 .github/instructions/codacy.instructions.md
+
+# cortex plugin
+**/.claude/*.local.md
+cortex/node_modules/
+cortex/bun.lock
+**/*.cortex.db
+**/*.cortex.db-*
+.cortex-cache/

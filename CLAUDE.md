@@ -12,7 +12,7 @@ This is a **public** repo — anything committed is consumed by strangers via `/
 
 ## Current state
 
-The marketplace is scaffolded but holds **no plugins yet**: `.claude-plugin/marketplace.json` exists with an empty `plugins: []`, and `LICENSE` (MIT) is in place. There is still **no build, test, or lint tooling and no `package.json`.** Do not invent or assume such commands exist — if you need one, add it deliberately and document it here.
+The marketplace now hosts its first plugin, **`cortex`** (`./cortex`): an always-on, lifecycle-integrated memory + cognition "brain" built on **Bun + TypeScript** (its own `package.json`/`tsconfig.json`). See `ROADMAP.md` for the full build plan and sprint tracker. The repo `LICENSE` is **BUSL-1.1** (Business Source License — source-available; converts to Apache-2.0 on 2030-06-15), mirroring ARRA. The marketplace **root** still has no build/test/lint tooling; only the `cortex/` plugin carries tooling, and it uses **Bun** (not npm) — do not assume root-level scripts exist.
 
 The marketplace identifier is **`claude-smartwork`** (the `name` in `marketplace.json`) — this is the public `@marketplace` suffix users type in `/plugin install <plugin>@claude-smartwork`, so do not rename it casually. Adding the first plugin = create a `<plugin-name>/` dir with its own `.claude-plugin/plugin.json`, then append an entry to `plugins[]` with `"source": "./<plugin-name>"`.
 
@@ -47,4 +47,11 @@ Users consume this marketplace with `/plugin marketplace add <owner/repo>` then 
 ## Environment specifics
 
 - `.claude/settings.local.json` runs this repo in **`bypassPermissions` mode** — tool calls are not gated by prompts here. Be correspondingly careful with destructive or outward-facing actions.
-- The `code-review-graph` MCP server is **disabled** for this repo, so the graph-first workflow described in the global `~/CLAUDE.md` does not apply — use Grep/Glob/Read directly.
+- The `code-review-graph` MCP server is **disabled** for this repo, so the graph-first workflow described in the global `~/CLAUDE.md` does not apply. For source discovery, use `/graphify` instead (see "Coding workflow"); fall back to Grep/Glob/Read only when the graph doesn't cover what you need.
+
+## Coding workflow
+
+These conventions apply whenever you write, modify, or review code in this repo:
+
+- **Source discovery: use `/graphify` first.** Before reaching for Grep/Glob/Read to locate functions, definitions, or relationships, query the knowledge graph via the `graphify` skill (`/graphify`) — it is faster and more token-efficient, which is the whole point of this marketplace. Drop to raw file scanning only when the graph genuinely doesn't cover the answer.
+- **Coding standard: `/karpathy-guidelines`.** Hold all code changes to the `karpathy-guidelines` skill (`/karpathy-guidelines`): make surgical, minimal-diff changes; avoid overcomplication; surface assumptions explicitly; and define verifiable success criteria before claiming done.
