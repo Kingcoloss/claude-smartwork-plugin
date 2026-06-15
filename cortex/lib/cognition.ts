@@ -70,6 +70,11 @@ export function hindranceBlock(): string {
   return [HINDRANCE_HEADER, ...HINDRANCES.map((d) => `- ${d.name} (${d.pali}): ${d.line}`)].join('\n') + '\n';
 }
 
+/** The full standing cognition prime — disciplines + self-observation — injected once at SessionStart (S5-T4). */
+export function cognitionPrimer(): string {
+  return disciplineBlock() + '\n' + hindranceBlock();
+}
+
 /** Default recurrence count at which a Core Memory lesson is "chronic" (1 first, 2 repeat, 3 = a pattern). */
 const DEFAULT_MIN_HITS = 3;
 const clamp = (s: string, n = 100): string => (s.length > n ? s.slice(0, n - 1) + '…' : s);

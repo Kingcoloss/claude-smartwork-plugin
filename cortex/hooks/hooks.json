@@ -19,6 +19,14 @@
             "command": "command -v bun >/dev/null 2>&1 && bun \"${CLAUDE_PLUGIN_ROOT}/hooks/expression-sessionstart.ts\" || true"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v bun >/dev/null 2>&1 && bun \"${CLAUDE_PLUGIN_ROOT}/hooks/cognition-sessionstart.ts\" || true"
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
@@ -35,6 +43,14 @@
           {
             "type": "command",
             "command": "command -v bun >/dev/null 2>&1 && bun \"${CLAUDE_PLUGIN_ROOT}/hooks/memory-recall-userpromptsubmit.ts\" || true"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v bun >/dev/null 2>&1 && bun \"${CLAUDE_PLUGIN_ROOT}/hooks/cognition-userpromptsubmit.ts\" || true"
           }
         ]
       }
