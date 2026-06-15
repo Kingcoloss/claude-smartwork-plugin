@@ -297,6 +297,7 @@ export interface CoreHit {
   nirodha: string | null;
   magga: string | null;
   hits: number;      // times this error recurred (higher = more chronic)
+  updatedAt: number; // last seen/merged (epoch ms) — feeds the freshness caveat (S4-T5)
   score: number;
   sources: string[];
 }
@@ -432,6 +433,7 @@ export async function recallCore(
     .select({
       id: coreMemory.id, dukkha: coreMemory.dukkha, samudaya: coreMemory.samudaya,
       nirodha: coreMemory.nirodha, magga: coreMemory.magga, hits: coreMemory.hits,
+      updatedAt: coreMemory.updatedAt,
     })
     .from(coreMemory)
     .where(inArray(coreMemory.id, ranked.map((r) => r.id)))
@@ -464,6 +466,7 @@ export interface WikiHit {
   title: string;
   body: string;
   tags: string | null;
+  updatedAt: number; // last edited (epoch ms) — feeds the freshness caveat (S4-T5)
   score: number;
   sources: string[];
 }
@@ -526,7 +529,7 @@ export async function recallWiki(
   if (ranked.length === 0) return [];
 
   const rows = h.orm
-    .select({ id: semantic.id, title: semantic.title, body: semantic.body, tags: semantic.tags })
+    .select({ id: semantic.id, title: semantic.title, body: semantic.body, tags: semantic.tags, updatedAt: semantic.updatedAt })
     .from(semantic)
     .where(inArray(semantic.id, ranked.map((r) => r.id)))
     .all();
@@ -537,6 +540,47 @@ export async function recallWiki(
       return row ? { ...row, score: r.score, sources: r.sources } : null;
     })
     .filter((x): x is WikiHit => x !== null);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Recall-into-context — the freshness-caveated injection block (S4-T5)
+// Sati-Sampajañña: recall tells you what happened BEFORE; it is not a claim about
+// what is true NOW. So every injected item carries its age and the block is fenced
+// with a "may be stale — verify against current state" caveat — recall informs, it
+// never overrides present reality (mirrors native CC's own stale-memory guidance).
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Coarse human age of an epoch-ms timestamp ("just now" → "Nmo ago"). */
+function ago(now: number, then: number): string {
+  const s = Math.max(0, Math.floor((now - then) / 1000));
+  if (s < 60) return 'just now';
+  const m = Math.floor(s / 60); if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60); if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h / 24); if (d < 30) return `${d}d ago`;
+  return `${Math.floor(d / 30)}mo ago`;
+}
+
+/**
+ * Render recalled lessons + knowledge into one compact context block for a hook to
+ * inject, or '' when there's nothing (→ the hook no-ops). Pure: takes `now` so age is
+ * deterministic and testable. Lessons lead (the anti-repeat signal: "seen ×N" + fix),
+ * then knowledge; snippets are clamped so per-prompt injection stays cheap.
+ */
+export function formatRecall(core: CoreHit[], wiki: WikiHit[], now: number): string {
+  if (core.length === 0 && wiki.length === 0) return '';
+  const lines = ['⟦cortex recall — from memory; may be STALE, verify against current state before relying on it⟧'];
+  if (core.length) {
+    lines.push('Past lessons (อริยสัจ4 / Core Memory):');
+    for (const c of core) {
+      const fix = c.magga?.trim() ? ` → fix: ${snippet(c.magga)}` : '';
+      lines.push(`- (seen ×${c.hits}, ${ago(now, c.updatedAt)}) ${snippet(c.dukkha)}${fix}`);
+    }
+  }
+  if (wiki.length) {
+    lines.push('Relevant knowledge (LLM-Wiki):');
+    for (const w of wiki) lines.push(`- (${ago(now, w.updatedAt)}) ${w.title}: ${snippet(w.body)}`);
+  }
+  return lines.join('\n');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

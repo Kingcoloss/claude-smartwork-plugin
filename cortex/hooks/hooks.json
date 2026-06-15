@@ -29,6 +29,14 @@
             "command": "command -v bun >/dev/null 2>&1 && bun \"${CLAUDE_PLUGIN_ROOT}/hooks/expression-userpromptsubmit.ts\" || true"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v bun >/dev/null 2>&1 && bun \"${CLAUDE_PLUGIN_ROOT}/hooks/memory-recall-userpromptsubmit.ts\" || true"
+          }
+        ]
       }
     ],
     "PostToolUse": [
