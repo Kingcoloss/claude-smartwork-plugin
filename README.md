@@ -30,7 +30,7 @@ how to plan, how to remember, how to think.
 /plugin install cortex@claude-smartwork
 ```
 
-See [`cortex/README.md`](./cortex/README.md) for prerequisites, configuration, and the full brain model.
+See [`cortex/README.md`](./cortex/README.md) for prerequisites, configuration, and the full brain model — or the Thai guide [`cortex/GUIDE.th.md`](./cortex/GUIDE.th.md) (คู่มือภาษาไทย).
 
 ## License
 

@@ -6,6 +6,8 @@ cortex gives Claude Code a brain-shaped working model that **cooperates with** (
 
 > **Status:** ✅ All five faculties built, gated, and wired into the lifecycle (Sprints 0–5 complete); Sprint 6 = integration & first publish (v0.1.0). See [`../ROADMAP.md`](../ROADMAP.md) for the full plan and progress.
 
+> 📖 **คู่มือภาษาไทย (วิธีใช้ + command reference):** [`GUIDE.th.md`](./GUIDE.th.md)
+
 ## The brain model
 
 ```
