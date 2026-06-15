@@ -214,7 +214,7 @@ Goal: critical thinking + wisdom + efficient learning, always-on. **CLOSED — a
 ### M6 / Sprint 6 — Integration, Validation, Docs  ⬜
 Goal: wire everything, validate, publish.
 - [ ] ⬜ S6-T1 *(optional)* Elysia HTTP dashboard + cross-agent shared store
-- [ ] ⬜ S6-T2 End-to-end lifecycle wiring + conflict checks across hooks
+- [x] ✅ S6-T2 **End-to-end lifecycle wiring + conflict checks across hooks** — cortex wires EIGHT hooks across five events, several sharing one (SessionStart×2, UserPromptSubmit×3). New `scripts/lifecycle-test.ts` **16/16** proves both halves: (a) **wiring** — every `hooks.json` command targets a real, `command -v bun`-guarded, `|| true` best-effort file, and the event→hook order matches the brain model; (b) **conflict-free** — the co-event hooks all run, each emits its OWN independently-valid output and none clobbers another. SessionStart: expression prime + cognition prime coexist (neither carries the other's content). UserPromptSubmit: on one prompt (coding + seeded-chronic) all three fire — expression anchor, memory-recall caveat'd block, cognition coding-discipline + อุทธัจจกุกกุจจะ flag — as three independent `additionalContext` payloads (additive, CC merges; no overwrite). No ollama/Claude.
 - [ ] ⬜ S6-T3 `plugin-validator` agent pass + fix
 - [ ] ⬜ S6-T4 `skill-reviewer` pass on each skill
 - [ ] ⬜ S6-T5 Full README + config templates + attribution (caveman/pordee/headroom/arra/buddhist + graphify/karpathy)
