@@ -27,6 +27,7 @@ expression.enabled: true
 expression.mode: full        # lite | full | ultra
 memory.enabled: true
 # memory.dir defaults to $CLAUDE_CONFIG_DIR/cortex/memory
+cognition.enabled: true      # thinking-discipline + นิวรณ์5 metacognition + sub-agent handoff
 ---
 
 # cortex.local.md
