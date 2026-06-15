@@ -11,7 +11,12 @@
  * user's language), this shapes CLAUDE's own reasoning — internal context — so it is written in
  * one reasoning language. This module is the CONTENT layer (gated here); S5-T4 wires it into
  * SessionStart (token-aware). Cooperate-not-replace: it informs judgment, never overrides it.
+ *
+ * S5-T2 adds the อภิธรรม / metacognition layer: HINDRANCES (นิวรณ์5) — a bounded anti-pattern
+ * taxonomy to self-observe against — and metacognitionFlag(), the Memory→Cognition link that
+ * turns a chronic Core Memory recurrence (S4-T3 `hits`) into a "don't loop the same fix" red-flag.
  */
+import { recallCore, type MemoryHandle } from './memory.ts';
 
 export interface Discipline {
   name: string; // short English handle
@@ -40,4 +45,61 @@ const HEADER = '⟦cortex cognition — thinking discipline (any task; informs y
  */
 export function disciplineBlock(): string {
   return [HEADER, ...DISCIPLINES.map((d) => `- ${d.name} (${d.pali}): ${d.line}`)].join('\n') + '\n';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// อภิธรรม / metacognition layer (S5-T2) — observe one's own mind-state.
+// Where the disciplines above PRIME good thinking, นิวรณ์5 names the five recurring
+// failure-states to CATCH in oneself. สติปัฏฐาน framing: observe the state, don't
+// suppress it. Domain-agnostic — these afflict any focused task, not just coding.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** The five hindrances (นิวรณ์5) — each line is the anti-pattern + the self-correction. */
+export const HINDRANCES: Discipline[] = [
+  { name: 'Distraction', pali: 'Kāmacchanda', line: 'pulled into tangents or shiny side-quests — return to the actual task.' },
+  { name: 'Aversion', pali: 'Byāpāda', line: 'forcing or fighting the problem in frustration — step back and work with it, not against it.' },
+  { name: 'Shallow effort', pali: 'Thīnamiddha', line: 'coasting on a shallow first answer — go to the depth the task actually needs.' },
+  { name: 'Thrashing', pali: 'Uddhacca', line: 'retrying the same failed move or churning without progress — stop and rethink the approach.' },
+  { name: 'Doubt', pali: 'Vicikicchā', line: 'stuck in doubt, unable to choose — gather one decisive fact, then act.' },
+];
+
+const HINDRANCE_HEADER = '⟦cortex metacognition — watch your own state (นิวรณ์5; observe it, don\'t suppress it)⟧';
+
+/** Render the standing self-observation block (companion to disciplineBlock; S5-T4 injects both). */
+export function hindranceBlock(): string {
+  return [HINDRANCE_HEADER, ...HINDRANCES.map((d) => `- ${d.name} (${d.pali}): ${d.line}`)].join('\n') + '\n';
+}
+
+/** Default recurrence count at which a Core Memory lesson is "chronic" (1 first, 2 repeat, 3 = a pattern). */
+const DEFAULT_MIN_HITS = 3;
+const clamp = (s: string, n = 100): string => (s.length > n ? s.slice(0, n - 1) + '…' : s);
+
+/**
+ * Memory→Cognition link — อุทธัจจกุกกุจจะ (thrashing / repeating a known failure).
+ *
+ * Recall the Core Memory for `context`; if a lesson is already CHRONIC (hits ≥ minHits), raise a
+ * red-flag so cortex does not loop a known failure. อริยสัจ4 (S4-T3) STORES the recurrence as a
+ * `hits` counter; this is where นิวรณ์5 metacognition WARNS on it. Best-effort + quiet: empty
+ * context, nothing chronic, or a down store → '' (the caller no-ops). `minHits` is the tunable
+ * sensitivity knob (lower = warns sooner, more noise; higher = only the most chronic).
+ */
+export async function metacognitionFlag(
+  h: MemoryHandle,
+  context: string,
+  opts: { minHits?: number; limit?: number } = {},
+): Promise<string> {
+  const ctx = (context ?? '').trim();
+  if (!ctx) return '';
+  const minHits = opts.minHits ?? DEFAULT_MIN_HITS;
+  const recalled = await recallCore(h, ctx, { limit: opts.limit ?? 5 });
+  const chronic = recalled.filter((c) => c.hits >= minHits);
+  if (chronic.length === 0) return '';
+  const lines = [
+    '⚠️ ⟦cortex metacognition — chronic recurrence (อุทธัจจกุกกุจจะ / thrashing): you have hit this before. Do NOT loop the same fix — confirm the prior fix actually held, or change approach.⟧',
+  ];
+  for (const c of chronic) {
+    const fix = c.magga?.trim() ? `  (last fix: ${clamp(c.magga)})` : '';
+    lines.push(`- seen ×${c.hits}: ${clamp(c.dukkha)}${fix}`);
+  }
+  return lines.join('\n');
 }
