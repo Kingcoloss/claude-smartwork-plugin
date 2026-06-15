@@ -48,6 +48,19 @@ Copy [`cortex.local.md.example`](./cortex.local.md.example) to `.claude/cortex.l
 | Escalation model | `CORTEX_ESCALATION_MODEL` | `sonnet` |
 | Memory dir | `CORTEX_MEMORY_DIR` | `$CLAUDE_CONFIG_DIR/cortex/memory` |
 
+## Controls
+
+Adjust terse output and check savings at any time with `/cortex`:
+
+| Command | Effect |
+|---|---|
+| `/cortex off` | stop terse-output nudges |
+| `/cortex lite` · `full` · `ultra` | set the terseness level |
+| `/cortex on` | back to the configured default |
+| `/cortex status` | show effective state + cumulative token savings |
+
+Changes take effect from the next prompt. Everything is opt-in style guidance — turning cortex off changes nothing native.
+
 ## Attribution
 
 Reimplemented from scratch, inspired by these projects (patterns only, no source copied):

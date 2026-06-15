@@ -94,7 +94,9 @@ const hookPath = join(import.meta.dir, '..', 'hooks', 'perception-posttooluse.ts
 async function runHook(payload: unknown, runDir: string): Promise<string> {
   const proc = Bun.spawn(['bun', hookPath], {
     cwd: runDir,
-    env: { ...process.env, OLLAMA_HOST: host, CORTEX_COMPRESS_MODEL: 'fake' },
+    // CLAUDE_CONFIG_DIR → runDir so a successful compress writes its savings
+    // tally (lib/stats.ts) into the temp dir, never the real ~/.claude.
+    env: { ...process.env, OLLAMA_HOST: host, CORTEX_COMPRESS_MODEL: 'fake', CLAUDE_CONFIG_DIR: runDir },
     stdin: new TextEncoder().encode(JSON.stringify(payload)),
     stdout: 'pipe',
     stderr: 'pipe',

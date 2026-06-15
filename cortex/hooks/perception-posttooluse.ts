@@ -17,6 +17,7 @@ import { perceive, overThreshold } from '../lib/perception.ts';
 import { classify } from '../lib/router.ts';
 import { compress } from '../lib/compress.ts';
 import { cacheOriginal } from '../lib/cache.ts';
+import { recordCompression } from '../lib/stats.ts';
 import { debug } from '../lib/log.ts';
 
 /** Only replace if the compressed result is at most this fraction of the original. */
@@ -59,6 +60,7 @@ async function main(): Promise<void> {
   }
 
   debug('perception', seen.tool, `${kind} ${seen.chars}→${replacement.length} chars (saved ${seen.chars - replacement.length})`);
+  recordCompression(seen.chars, replacement.length); // best-effort; feeds `/cortex status`
   process.stdout.write(
     JSON.stringify({
       hookSpecificOutput: {
