@@ -182,6 +182,8 @@ Goal: critical thinking + wisdom + efficient learning, always-on.
 - [ ] ⬜ S5-T5 `cortex-think` skill (deep reasoning on demand)
 - [ ] ⬜ S5-T6 Fold **karpathy-guidelines** coding discipline into cognition
 - [ ] ⬜ S5-T7 **graphify** integration: prefer KG discovery → cheaper code navigation
+- [x] ✅ S5-T8 **Sub-agent delegation handoff** (user-requested, pulled forward) — a **PreToolUse** hook on `Task`/`Agent` prepends a project handoff to the sub-agent's `prompt` so it inherits scope instead of starting cold. Mechanism **`hookSpecificOutput.updatedInput`** (verified live: RTK's rewrite hook uses it on this CC version; emitted WITHOUT `permissionDecision` so we augment input but never override the spawn-permission flow). `lib/handoff.ts` reads `.cortex/handoff.md` (walk-up, 8KB cap, missing → no-op); `hooks/cognition-pretooluse.ts`; `config.cognition.enabled` + `CORTEX_COGNITION`. Gate `scripts/cognition-test.ts` **13/13** (readHandoff/compose + hook e2e: Task→updatedInput carries handoff+task & preserves other fields, no-file/non-Task/no-prompt → no-op).
+  - *Carry-forward:* (1) handoff is **manually maintained** in `.cortex/handoff.md` for now → **Memory faculty (S4) will auto-write it** from session state. (2) live Task-spawn end-to-end capture (does the sub-agent actually receive the rewritten prompt) is the final confirmation — low risk (RTK proves `updatedInput` live, same event/field).
 
 ### M6 / Sprint 6 — Integration, Validation, Docs  ⬜
 Goal: wire everything, validate, publish.

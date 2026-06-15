@@ -31,6 +31,7 @@ export interface CortexConfig {
   escalation: { enabled: boolean; model: string };
   perception: { enabled: boolean; thresholdChars: number; timeoutMs: number };
   expression: { enabled: boolean; mode: 'lite' | 'full' | 'ultra'; lang: 'auto' | 'en' | 'th' };
+  cognition: { enabled: boolean };
   memory: { enabled: boolean; dir: string | null };
 }
 
@@ -53,6 +54,8 @@ const DEFAULTS: CortexConfig = {
   // fast on slow backends, raise it only with a faster model. See ROADMAP S2-T3.
   perception: { enabled: true, thresholdChars: 4000, timeoutMs: 15_000 },
   expression: { enabled: true, mode: 'full', lang: 'auto' },
+  // Cognition: inject a project handoff into delegated sub-agents (PreToolUse on Task).
+  cognition: { enabled: true },
   memory: { enabled: true, dir: null },
 };
 
@@ -126,6 +129,7 @@ function applyEnv(cfg: CortexConfig): void {
   if (e.CORTEX_EXPRESSION != null) cfg.expression.enabled = e.CORTEX_EXPRESSION !== '0' && e.CORTEX_EXPRESSION !== 'false';
   if (e.CORTEX_EXPRESS_MODE === 'lite' || e.CORTEX_EXPRESS_MODE === 'full' || e.CORTEX_EXPRESS_MODE === 'ultra') cfg.expression.mode = e.CORTEX_EXPRESS_MODE;
   if (e.CORTEX_EXPRESS_LANG === 'auto' || e.CORTEX_EXPRESS_LANG === 'en' || e.CORTEX_EXPRESS_LANG === 'th') cfg.expression.lang = e.CORTEX_EXPRESS_LANG;
+  if (e.CORTEX_COGNITION != null) cfg.cognition.enabled = e.CORTEX_COGNITION !== '0' && e.CORTEX_COGNITION !== 'false';
   if (e.CORTEX_MEMORY_DIR) cfg.memory.dir = e.CORTEX_MEMORY_DIR;
 }
 
