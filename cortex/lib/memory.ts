@@ -14,7 +14,7 @@
  */
 import { Database } from 'bun:sqlite';
 import { drizzle, type BunSQLiteDatabase } from 'drizzle-orm/bun-sqlite';
-import { eq, and, inArray, sql } from 'drizzle-orm';
+import { eq, and, inArray, sql, desc } from 'drizzle-orm';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -542,6 +542,20 @@ export async function recallWiki(
     .filter((x): x is WikiHit => x !== null);
 }
 
+export interface WikiPage { id: string; title: string; tags: string | null; updatedAt: number; }
+
+/** List all LLM-Wiki pages, newest-edited first — the catalog behind `/cortex-recall --index`. */
+export function listWiki(h: MemoryHandle, limit = 100): WikiPage[] {
+  try {
+    return h.orm
+      .select({ id: semantic.id, title: semantic.title, tags: semantic.tags, updatedAt: semantic.updatedAt })
+      .from(semantic).orderBy(desc(semantic.updatedAt)).limit(limit).all();
+  } catch (e) {
+    debug('memory', 'listWiki', (e as Error)?.message);
+    return [];
+  }
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Recall-into-context — the freshness-caveated injection block (S4-T5)
 // Sati-Sampajañña: recall tells you what happened BEFORE; it is not a claim about
@@ -551,7 +565,7 @@ export async function recallWiki(
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Coarse human age of an epoch-ms timestamp ("just now" → "Nmo ago"). */
-function ago(now: number, then: number): string {
+export function ago(now: number, then: number): string {
   const s = Math.max(0, Math.floor((now - then) / 1000));
   if (s < 60) return 'just now';
   const m = Math.floor(s / 60); if (m < 60) return `${m}m ago`;
