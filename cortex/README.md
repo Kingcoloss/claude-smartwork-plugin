@@ -61,6 +61,18 @@ Adjust terse output and check savings at any time with `/cortex`:
 
 Changes take effect from the next prompt. Everything is opt-in style guidance — turning cortex off changes nothing native.
 
+## Memory tools (MCP)
+
+Memory is mostly **automatic** (recalled into context each prompt, consolidated at session end). For the times Claude needs to reach for it mid-task, cortex also ships a small MCP server (`cortex-memory`, auto-discovered via `.mcp.json`) exposing three tools:
+
+| Tool | Does |
+|---|---|
+| `memory_recall` | recall past lessons (Core Memory) + knowledge (LLM-Wiki) for a query — returns a freshness-caveated block |
+| `memory_commit` | save one lesson (dedups by signature) or one knowledge page (upserts by title) |
+| `wiki_search` | search the LLM-Wiki, or list the whole page catalog |
+
+Requires Bun on `PATH`. If Bun is absent the server simply won't connect — the rest of Claude Code is unaffected.
+
 ## Attribution
 
 Reimplemented from scratch, inspired by these projects (patterns only, no source copied):
