@@ -16,6 +16,14 @@
         "hooks": [
           {
             "type": "command",
+            "command": "command -v bun >/dev/null 2>&1 && bash \"${CLAUDE_PLUGIN_ROOT}/scripts/ensure-deps.sh\" \"${CLAUDE_PLUGIN_ROOT}\" >/dev/null 2>&1; true"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
             "command": "command -v bun >/dev/null 2>&1 && bun \"${CLAUDE_PLUGIN_ROOT}/hooks/expression-sessionstart.ts\" || true"
           }
         ]

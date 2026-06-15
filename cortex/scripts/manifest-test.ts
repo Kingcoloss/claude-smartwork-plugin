@@ -49,9 +49,10 @@ ok(!advertised.includes('elysia'), 'no manifest claims Elysia (not shipped — d
 const mcp = readJson(join(root, '.mcp.json'));
 ok(mcp !== null, '.mcp.json is valid JSON');
 const server = mcp?.mcpServers?.['cortex-memory'];
-ok(server?.command === 'bun', 'cortex-memory MCP server runs via bun', server?.command);
-const mcpTarget = (server?.args ?? []).find((a: string) => /server\.ts$/.test(a));
-ok(!!mcpTarget && existsSync(join(root, 'mcp', 'server.ts')), 'MCP server entry (mcp/server.ts) exists');
+const mcpScript = (server?.args ?? []).join(' ');
+ok(server?.command === 'bash', 'cortex-memory MCP server launches via a bash wrapper', server?.command);
+ok(/mcp\/server\.ts/.test(mcpScript) && existsSync(join(root, 'mcp', 'server.ts')), 'MCP wrapper execs the existing mcp/server.ts');
+ok(/ensure-deps\.sh/.test(mcpScript) && existsSync(join(root, 'scripts', 'ensure-deps.sh')), 'MCP wrapper self-provisions deps via ensure-deps.sh (first-run fix for -32000)');
 
 // ── 4. hooks.json — valid + every referenced hook file present ───────────────
 const hooks = readJson(join(root, 'hooks', 'hooks.json'));

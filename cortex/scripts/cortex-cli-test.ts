@@ -23,7 +23,10 @@ const rememberScript = join(import.meta.dir, 'cortex-remember.ts');
 
 async function run(script: string, args: string[]): Promise<{ out: string; code: number }> {
   const proc = Bun.spawn(['bun', script, ...args], {
-    env: { ...process.env, CLAUDE_CONFIG_DIR: CFG, CORTEX_MEMORY_DIR: MEM },
+    // Force FTS-only (dead ollama → embed null) so this gate is deterministic regardless of a
+    // running ollama. With vec on, vec0 KNN returns the nearest item for ANY query (no distance
+    // floor), so an "irrelevant query → nothing relevant" assertion only holds under FTS-only.
+    env: { ...process.env, CLAUDE_CONFIG_DIR: CFG, CORTEX_MEMORY_DIR: MEM, OLLAMA_HOST: 'http://127.0.0.1:1' },
     stdout: 'pipe',
     stderr: 'pipe',
   });

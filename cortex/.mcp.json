@@ -1,8 +1,13 @@
 {
   "mcpServers": {
     "cortex-memory": {
-      "command": "bun",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/server.ts"]
+      "command": "bash",
+      "args": [
+        "-c",
+        "bash \"$1/scripts/ensure-deps.sh\" \"$1\" >/dev/null 2>&1; exec bun \"$1/mcp/server.ts\"",
+        "--",
+        "${CLAUDE_PLUGIN_ROOT}"
+      ]
     }
   }
 }

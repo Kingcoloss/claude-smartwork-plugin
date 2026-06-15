@@ -58,11 +58,15 @@ async function runHook(file: string, stdin: unknown, env: Record<string, string>
   return { out, code };
 }
 
-// ── 1. wiring — every command targets a real, guarded hook file ──────────────
+// ── 1. wiring — every command targets a real, guarded file ───────────────────
 const cmds = allCommands();
-ok(cmds.length === 8, 'hooks.json wires eight hook commands across five events', String(cmds.length));
-ok(cmds.every((c) => existsSync(join(hooksDir, /hooks\/([\w-]+\.ts)/.exec(c.command)![1]))), 'every command points at an existing hook file');
-ok(cmds.every((c) => /command -v bun/.test(c.command) && /\|\| true\s*$/.test(c.command)), 'every command is bun-guarded and best-effort (|| true)');
+const hookCmds = cmds.filter((c) => /hooks\/[\w-]+\.ts/.test(c.command));   // the eight faculty hooks
+const provision = cmds.filter((c) => /scripts\/ensure-deps\.sh/.test(c.command)); // first-run dep provisioner
+ok(cmds.length === 9, 'hooks.json wires nine commands (eight hooks + the dep provisioner)', String(cmds.length));
+ok(hookCmds.length === 8, 'eight faculty-hook commands across five events', String(hookCmds.length));
+ok(hookCmds.every((c) => existsSync(join(hooksDir, /hooks\/([\w-]+\.ts)/.exec(c.command)![1]))), 'every hook command points at an existing hook file');
+ok(provision.length === 1 && existsSync(join(hooksDir, '..', 'scripts', 'ensure-deps.sh')), 'a SessionStart command provisions deps via ensure-deps.sh (first-run -32000 fix)');
+ok(cmds.every((c) => /command -v bun/.test(c.command) && /(\|\| true|; true)\s*$/.test(c.command)), 'every command is bun-guarded and best-effort (|| true / ; true)');
 
 // ── 2. event coverage matches the brain model ────────────────────────────────
 ok(JSON.stringify(hookFiles('SessionStart')) === JSON.stringify(['expression-sessionstart.ts', 'cognition-sessionstart.ts']), 'SessionStart: expression then cognition');

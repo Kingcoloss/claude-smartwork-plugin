@@ -2,6 +2,16 @@
 
 All notable changes to the **cortex** plugin. Versions follow [SemVer](https://semver.org).
 
+## 0.1.1 — 2026-06-16
+
+**Fix — first-run dependency provisioning (the install-breaking `-32000`).** `node_modules` is
+gitignored, so a fresh `/plugin install` shipped source only; the hooks then crashed on import
+(silent no-op) and the MCP `cortex-memory` server returned `-32000`. The plugin now provisions its
+own deps the first time it runs: a lock-guarded `scripts/ensure-deps.sh` runs `bun install` if
+`node_modules` is missing, invoked both by a new SessionStart hook (for the lifecycle hooks) and by
+the MCP server's launch wrapper (`.mcp.json` now `bash`-wraps the server). The lock prevents the two
+from racing a double install. Also: MCP `serverInfo.version` now tracks the plugin version.
+
 ## 0.1.0 — 2026-06-15
 
 First feature-complete release: all five faculties built, gated, and wired into the Claude Code
