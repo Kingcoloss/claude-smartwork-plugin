@@ -150,6 +150,7 @@ cortex ทำงานเองเป็นส่วนใหญ่ คำสั
 | โมเดลที่ยกระดับ | `CORTEX_ESCALATION_MODEL` | `sonnet` |
 | โฟลเดอร์ความจำ | `CORTEX_MEMORY_DIR` | `$CLAUDE_CONFIG_DIR/cortex/memory` |
 | ปิด Cognition | `CORTEX_COGNITION` | `true` (ตั้ง `0` เพื่อปิด) |
+| policy บันทึก decision | `CORTEX_CAPTURE_DECISIONS` | `true` (ตั้ง `0` เพื่อปิด) |
 
 > **การยกระดับเป็น Claude** (`escalation`) รันผ่าน `claude` CLI จึงใช้ auth เดียวกับ Claude Code —
 > สมาชิก Pro/Max ใช้ได้โดยไม่ต้องมี API key เปิดไว้เพื่อให้การสรุปความจำแม่นขึ้นเมื่อโมเดลเล็กไม่พอ

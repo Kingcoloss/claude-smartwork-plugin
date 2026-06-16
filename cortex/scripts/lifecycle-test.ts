@@ -62,14 +62,14 @@ async function runHook(file: string, stdin: unknown, env: Record<string, string>
 const cmds = allCommands();
 const hookCmds = cmds.filter((c) => /hooks\/[\w-]+\.ts/.test(c.command));   // the eight faculty hooks
 const provision = cmds.filter((c) => /scripts\/ensure-deps\.sh/.test(c.command)); // first-run dep provisioner
-ok(cmds.length === 9, 'hooks.json wires nine commands (eight hooks + the dep provisioner)', String(cmds.length));
-ok(hookCmds.length === 8, 'eight faculty-hook commands across five events', String(hookCmds.length));
+ok(cmds.length === 10, 'hooks.json wires ten commands (nine hooks + the dep provisioner)', String(cmds.length));
+ok(hookCmds.length === 9, 'nine faculty-hook commands across five events', String(hookCmds.length));
 ok(hookCmds.every((c) => existsSync(join(hooksDir, /hooks\/([\w-]+\.ts)/.exec(c.command)![1]))), 'every hook command points at an existing hook file');
 ok(provision.length === 1 && existsSync(join(hooksDir, '..', 'scripts', 'ensure-deps.sh')), 'a SessionStart command provisions deps via ensure-deps.sh (first-run -32000 fix)');
 ok(cmds.every((c) => /command -v bun/.test(c.command) && /(\|\| true|; true)\s*$/.test(c.command)), 'every command is bun-guarded and best-effort (|| true / ; true)');
 
 // ── 2. event coverage matches the brain model ────────────────────────────────
-ok(JSON.stringify(hookFiles('SessionStart')) === JSON.stringify(['expression-sessionstart.ts', 'cognition-sessionstart.ts']), 'SessionStart: expression then cognition');
+ok(JSON.stringify(hookFiles('SessionStart')) === JSON.stringify(['expression-sessionstart.ts', 'cognition-sessionstart.ts', 'memory-sessionstart.ts']), 'SessionStart: expression, cognition, memory primes');
 ok(JSON.stringify(hookFiles('UserPromptSubmit')) === JSON.stringify(['expression-userpromptsubmit.ts', 'memory-recall-userpromptsubmit.ts', 'cognition-userpromptsubmit.ts']), 'UserPromptSubmit: expression → memory-recall → cognition');
 ok(JSON.stringify(hookFiles('PostToolUse')) === JSON.stringify(['perception-posttooluse.ts']), 'PostToolUse: perception');
 ok(JSON.stringify(hookFiles('SessionEnd')) === JSON.stringify(['memory-consolidate-sessionend.ts']), 'SessionEnd: memory-consolidate');

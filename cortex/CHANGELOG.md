@@ -2,6 +2,16 @@
 
 All notable changes to the **cortex** plugin. Versions follow [SemVer](https://semver.org).
 
+## 0.1.3 — 2026-06-16
+
+**Add — shipped memory-capture policy (no per-user CLAUDE.md edit needed).** A SessionStart
+hook now injects a standing policy so the behaviour ships with the plugin for every install:
+when a decision is reached (especially a grey-zone call) or you're told to remember one, commit
+it to cortex via `memory_commit` with `tags = "decision,<project>"`; and when recalling/consulting
+memory, also read cortex. It **augments** native CLAUDE.md / `/memory` / `remember` — never
+replaces them. Gated by `memory.captureDecisions` (default on; `CORTEX_CAPTURE_DECISIONS=0` to
+disable). Pairs with `--tag` (0.1.2) to recall a category.
+
 ## 0.1.2 — 2026-06-16
 
 **Add — `/cortex-recall --tag <tag>`.** Filter the LLM-Wiki catalog to pages carrying one

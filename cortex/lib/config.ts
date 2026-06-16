@@ -32,7 +32,7 @@ export interface CortexConfig {
   perception: { enabled: boolean; thresholdChars: number; timeoutMs: number };
   expression: { enabled: boolean; mode: 'lite' | 'full' | 'ultra'; lang: 'auto' | 'en' | 'th' };
   cognition: { enabled: boolean };
-  memory: { enabled: boolean; dir: string | null };
+  memory: { enabled: boolean; dir: string | null; captureDecisions: boolean };
 }
 
 const DEFAULTS: CortexConfig = {
@@ -56,7 +56,10 @@ const DEFAULTS: CortexConfig = {
   expression: { enabled: true, mode: 'full', lang: 'auto' },
   // Cognition: inject a project handoff into delegated sub-agents (PreToolUse on Task).
   cognition: { enabled: true },
-  memory: { enabled: true, dir: null },
+  // captureDecisions: inject the memory-capture policy at SessionStart (decisions → cortex,
+  // also read cortex on recall). Default on; the plugin ships the policy so it works without a
+  // per-user CLAUDE.md edit. Set false to disable the injection.
+  memory: { enabled: true, dir: null, captureDecisions: true },
 };
 
 export function configDir(): string {
@@ -131,6 +134,7 @@ function applyEnv(cfg: CortexConfig): void {
   if (e.CORTEX_EXPRESS_LANG === 'auto' || e.CORTEX_EXPRESS_LANG === 'en' || e.CORTEX_EXPRESS_LANG === 'th') cfg.expression.lang = e.CORTEX_EXPRESS_LANG;
   if (e.CORTEX_COGNITION != null) cfg.cognition.enabled = e.CORTEX_COGNITION !== '0' && e.CORTEX_COGNITION !== 'false';
   if (e.CORTEX_MEMORY_DIR) cfg.memory.dir = e.CORTEX_MEMORY_DIR;
+  if (e.CORTEX_CAPTURE_DECISIONS != null) cfg.memory.captureDecisions = e.CORTEX_CAPTURE_DECISIONS !== '0' && e.CORTEX_CAPTURE_DECISIONS !== 'false';
 }
 
 let _cached: CortexConfig | null = null;

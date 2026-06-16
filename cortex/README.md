@@ -49,6 +49,7 @@ Copy [`cortex.local.md.example`](./cortex.local.md.example) to `.claude/cortex.l
 | Claude escalation | `CORTEX_ESCALATION` | `false` |
 | Escalation model | `CORTEX_ESCALATION_MODEL` | `sonnet` |
 | Memory dir | `CORTEX_MEMORY_DIR` | `$CLAUDE_CONFIG_DIR/cortex/memory` |
+| Decision-capture policy | `CORTEX_CAPTURE_DECISIONS` | `true` |
 
 ## Controls
 

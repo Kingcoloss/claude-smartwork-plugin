@@ -1,6 +1,6 @@
 {
   "name": "cortex",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Human-brain-like memory & cognition for Claude Code. Always-on lifecycle integration that cooperates with native features (not replaces them) and cuts tokens via an embedded LLM (ollama, local or cloud). Faculties: Perception (read-compress), Expression (terse EN/TH), long-term Memory (episodic/semantic/Core Memory by อริยสัจ4), and Cognition (critical thinking + อภิธรรม wisdom).",
   "author": {
     "name": "kanganapong sriduang",
