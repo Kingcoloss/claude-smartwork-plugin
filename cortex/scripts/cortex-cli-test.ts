@@ -68,6 +68,14 @@ const idx = await run(recallScript, ['--index']);
 ok(/cortex LLM-Wiki — 1 page/.test(idx.out) && idx.out.includes('Fixture Isolation'), 'index lists the catalog (1 page, first-seen title casing)', idx.out.trim());
 ok(idx.out.includes('[testing,isolation]'), 'index shows page tags');
 
+// ── 4. cortex-recall --tag — filter the catalog by one whole tag ─────────────
+const tagHit = await run(recallScript, ['--tag', 'testing']);
+ok(/tag "testing"/.test(tagHit.out) && tagHit.out.includes('Fixture Isolation'), '--tag testing lists the tagged page', tagHit.out.trim());
+const tagPartial = await run(recallScript, ['--tag', 'test']); // whole-tag match, not substring
+ok(/\(none\)/.test(tagPartial.out), '--tag matches a whole tag, not a substring (test ≠ testing)');
+const tagMiss = await run(recallScript, ['--tag', 'decision']);
+ok(/tag "decision".*\(none\)/s.test(tagMiss.out), '--tag with no match → (none)');
+
 console.log('');
 console.log(failed === 0 ? '✅ ALL PASS' : `❌ ${failed} FAILED`);
 process.exit(failed === 0 ? 0 : 1);

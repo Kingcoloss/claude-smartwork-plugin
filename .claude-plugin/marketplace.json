@@ -13,7 +13,7 @@
       "name": "cortex",
       "source": "./cortex",
       "description": "Human-brain-like memory & cognition for Claude Code — always-on, token-efficient, ollama-powered (Bun + TypeScript).",
-      "version": "0.1.1"
+      "version": "0.1.2"
     }
   ]
 }

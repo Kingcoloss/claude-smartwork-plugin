@@ -16,20 +16,28 @@ import { getConfig } from '../lib/config.ts';
 import { openMemory, closeMemory, recallCore, recallWiki, listWiki, formatRecall, ago } from '../lib/memory.ts';
 
 const args = process.argv.slice(2);
+const tagIdx = args.indexOf('--tag');
+const tag = tagIdx >= 0 ? (args[tagIdx + 1] ?? '').trim() : null; // --tag <value> → filter the catalog by tag
 const h = openMemory({ cfg: getConfig() });
 if (!h) {
   process.stdout.write('cortex memory: unavailable (disabled or no sqlite)\n');
   process.exit(0);
 }
 
+/** Does a page carry `tag` as a whole, comma-separated tag (case-insensitive)? */
+const hasTag = (tags: string | null | undefined, want: string): boolean =>
+  (tags ?? '').split(',').map((s) => s.trim().toLowerCase()).includes(want.toLowerCase());
+
 try {
-  if (args.includes('--index')) {
-    const pages = listWiki(h, 100);
+  if (args.includes('--index') || tag) {
+    let pages = listWiki(h, 100);
+    if (tag) { const t = tag; pages = pages.filter((p) => hasTag(p.tags, t)); }
+    const label = tag ? `cortex LLM-Wiki — tag "${tag}"` : 'cortex LLM-Wiki';
     if (pages.length === 0) {
-      process.stdout.write('cortex LLM-Wiki: (empty)\n');
+      process.stdout.write(`${label}: (none)\n`);
     } else {
       const now = Date.now();
-      const lines = [`cortex LLM-Wiki — ${pages.length} page(s):`];
+      const lines = [`${label} — ${pages.length} page(s):`];
       for (const p of pages) lines.push(`- ${p.title}${p.tags ? `  [${p.tags}]` : ''}  (${ago(now, p.updatedAt)})`);
       process.stdout.write(lines.join('\n') + '\n');
     }

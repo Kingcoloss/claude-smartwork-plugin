@@ -29,7 +29,7 @@ const text = (t: string) => ({ content: [{ type: 'text' as const, text: t }] });
 
 /** Build the server with its three tools registered — separated from connect() so it stays testable. */
 export function buildServer(): McpServer {
-  const server = new McpServer({ name: 'cortex-memory', version: '0.1.1' });
+  const server = new McpServer({ name: 'cortex-memory', version: '0.1.2' });
 
   server.registerTool('memory_recall', {
     description:

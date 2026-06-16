@@ -2,6 +2,13 @@
 
 All notable changes to the **cortex** plugin. Versions follow [SemVer](https://semver.org).
 
+## 0.1.2 — 2026-06-16
+
+**Add — `/cortex-recall --tag <tag>`.** Filter the LLM-Wiki catalog to pages carrying one
+whole tag (case-insensitive; `test` does not match `testing`) — e.g. `--tag decision` or
+`--tag <project>`. Complements `--index` (all pages) and a relevance query. Enables the
+"capture decisions tagged by project, recall them by category" workflow.
+
 ## 0.1.1 — 2026-06-16
 
 **Fix — first-run dependency provisioning (the install-breaking `-32000`).** `node_modules` is

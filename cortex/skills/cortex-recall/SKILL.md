@@ -24,6 +24,13 @@ For "show everything / my knowledge base / catalog" — list all LLM-Wiki pages:
 bun "${CLAUDE_PLUGIN_ROOT}/scripts/cortex-recall.ts" --index
 ```
 
+For "show only a category" — list pages carrying one tag (e.g. all decisions, or one project's):
+
+```bash
+bun "${CLAUDE_PLUGIN_ROOT}/scripts/cortex-recall.ts" --tag decision
+bun "${CLAUDE_PLUGIN_ROOT}/scripts/cortex-recall.ts" --tag <project-name>
+```
+
 (If `${CLAUDE_PLUGIN_ROOT}` is unset, the script is `scripts/cortex-recall.ts` inside the
 cortex plugin directory.)
 
